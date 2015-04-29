@@ -1,0 +1,450 @@
+    <style>
+      #map {
+        height: 500px;
+        width: 900px;
+      }
+      #info {
+        position: absolute;
+        height: 1px;
+        width: 1px;
+        z-index: 100;
+      }
+      .tooltip.in {
+        opacity: 1;
+        filter: alpha(opacity=100);
+      }
+      .tooltip.top .tooltip-arrow {
+        border-top-color: white;
+      }
+      .tooltip-inner {
+        border: 2px solid white;
+      }
+    </style>
+    <div id="map" class="map"><div id="info"></div></div>
+    <div>
+      <label>Interaction type:  &nbsp;</label>
+      <label>draw</label>
+      <input type="radio" id="interaction_type_draw" name="interaction_type" value="draw" checked>
+      <label>modify</label>
+      <input type="radio" id="interaction_type_modify" name="interaction_type" value="modify">
+    </div>
+    <div style="display:none">
+      <label>Geometry type</label>
+      <select id="geom_type">
+        <option value="Point">Point</option>
+        <option value="LineString">LineString</option>
+        <option value="Polygon" selected>Polygon</option>
+      </select>
+    </div>
+    <div id="delete" style="text-decoration:underline;cursor:pointer">
+      Delete all features
+    </div>
+	<div id="list">
+	</div>
+	<label>Data:</label>
+    <textarea id="geojson" name="geojson" rows="4" style="width:100%"">{GEOJSON_TEXT}</textarea>
+           
+	<script>
+	// create a vector layer used for editing
+	
+
+var getText = function(feature) {
+	  var text = feature.get('name');
+	  return text;
+	};
+
+//load existing features to map, display their names
+var createTextStyle = function(feature) {
+  var align = 'center';
+  var baseline = 'middle';
+  var size = '15px';
+  var offsetX = 0;
+  var offsetY = 0;
+  var weight = 'bold';
+  var rotation = 0;
+  //var font = weight + ' ' + size + ' ' + 'veranda';
+  var font = '14px helvetica,sans-serif';
+
+  var fillColor = '#000';
+  var outlineColor = '#fff'
+  var outlineWidth = 2;
+
+  return new ol.style.Text({
+    textAlign: align,
+    textBaseline: baseline,
+    font: font,
+    text: getText(feature),
+    fill: new ol.style.Fill({color: fillColor}),
+    stroke: new ol.style.Stroke({color: outlineColor, width: outlineWidth}),
+    offsetX: offsetX,
+    offsetY: offsetY,
+    rotation: rotation
+  });
+};
+
+// style for existing features
+var createStyleFunction = function() {
+  return function(feature) {
+    var style = new ol.style.Style({
+      stroke: new ol.style.Stroke({
+        color: 'rgba(0,153,255, 1)',
+        width: 3
+      }),
+      fill: new ol.style.Fill({
+        color: 'rgba(255, 255, 255, 0.1)'
+      }),
+      text: createTextStyle(feature)
+    });
+    return [style];
+  };
+};	
+
+var vector_layer = new ol.layer.Vector({
+	  name: 'my_vectorlayer',
+	  source: new ol.source.GeoJSON(
+			    /** @type {olx.source.GeoJSONOptions} */ ({
+			        object: {GEOJSON}
+			    })
+			   ),
+	 style: createStyleFunction()
+	});
+
+// Old vector_layer definition without GeoJSON
+/*
+var vector_layer = new ol.layer.Vector({
+	  name: 'my_vectorlayer',
+	  source: new ol.source.Vector(),
+	  style: normalStyle
+	});
+	*/
+	
+//Das Hintergrundbild
+var layer = new ol.layer.Image({
+		title: "image",
+		opacity: 1,
+		source: new ol.source.ImageStatic({
+		  url: '{IMAGE_PATH}',
+		  //url: 'uhd.jpg',
+		  //ToDo Adjust dimensions according to uploaded image: +/-x:2 and +/-y:2 minx,miny,maxx,maxy
+		  imageExtent: [-390, -303, 390, 303],
+		  //imageExtent: [-200, -100, 200, 100],
+		  //imageExtent: [-1920, -1080, 1920, 1080],
+		  //Size in Pixels:
+		  imageSize: [780, 606]
+		  //imageSize: [1280, 1024]
+		  //imageSize: [19000, 6385]
+		})
+	  });
+
+// Create a map
+var map = new ol.Map({
+	controls: ol.control.defaults({}).extend([new ol.control.FullScreen()]),
+	logo: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" ,
+	target: 'map',
+  layers: [
+	layer,
+    vector_layer
+  ],
+	view: new ol.View({
+		center: [0, 0],
+		projection: 'EPSG:4326',
+		zoom: 0
+	})
+});
+
+//Call function to initialize jquery-form
+saveData();	
+
+
+// make interactions global so they can later be removed
+var select_interaction,
+    draw_interaction,
+    modify_interaction;
+
+// get the interaction type
+var $interaction_type = $('[name="interaction_type"]');
+// rebuild interaction when changed
+$interaction_type.on('click', function(e) {
+  // add new interaction
+  if (this.value === 'draw') {
+    addDrawInteraction();
+  } else {
+    addModifyInteraction();
+  }
+});
+
+// get geometry type
+var $geom_type = $('#geom_type');
+// rebuild interaction when the geometry type is changed
+$geom_type.on('change', function(e) {
+  map.removeInteraction(draw_interaction);
+  addDrawInteraction();
+});
+
+// get data type to save in
+$data_type = $('#data_type');
+// clear map and rebuild interaction when changed
+$data_type.onchange = function() {
+  clearMap();
+  map.removeInteraction(draw_interaction);
+  addDrawInteraction();
+};
+
+// build up modify interaction
+// needs a select and a modify interaction working together
+function addModifyInteraction() {
+  // remove draw interaction
+  map.removeInteraction(draw_interaction);
+  // create select interaction
+  select_interaction = new ol.interaction.Select({
+    // make sure only the desired layer can be selected
+    layers: function(vector_layer) {
+      return vector_layer.get('name') === 'my_vectorlayer';
+    }
+  });
+  map.addInteraction(select_interaction);
+  
+  // grab the features from the select interaction to use in the modify interaction
+  var selected_features = select_interaction.getFeatures();
+  // when a feature is selected...
+  selected_features.on('add', function(event) {
+    // grab the feature
+    var feature = event.element;
+    // ...listen for changes and save them
+    feature.on('change', saveData);
+    // listen to pressing of delete key, then delete selected features
+    $(document).on('keyup', function(event) {
+      if (event.keyCode == 46) {
+        // remove all selected features from select_interaction and my_vectorlayer
+        selected_features.forEach(function(selected_feature) {
+          var selected_feature_id = selected_feature.getId();
+          // remove from select_interaction
+          selected_features.remove(selected_feature);
+          // features aus vectorlayer entfernen
+          var vectorlayer_features = vector_layer.getSource().getFeatures();
+          vectorlayer_features.forEach(function(source_feature) {
+            var source_feature_id = source_feature.getId();
+            if (source_feature_id === selected_feature_id) {
+              // remove from my_vectorlayer
+              vector_layer.getSource().removeFeature(source_feature);
+              // save the changed data
+              saveData();
+            }
+          });
+        });
+        // remove listener
+        $(document).off('keyup');
+      }
+    });
+  });
+  // create the modify interaction
+  modify_interaction = new ol.interaction.Modify({
+    features: selected_features,
+    // delete vertices by pressing the SHIFT key
+    deleteCondition: function(event) {
+      return ol.events.condition.shiftKeyOnly(event) &&
+        ol.events.condition.singleClick(event);
+    }
+  });
+  // add it to the map
+  map.addInteraction(modify_interaction);
+}
+
+//test ####################################
+function createStyleWithText(name) {
+	
+var text = new ol.style.Text({
+	font: '14px helvetica,sans-serif',
+	text: name,
+	rotation: 0,
+	fill: new ol.style.Fill({
+		color: '#000'
+	}),
+	stroke: new ol.style.Stroke({
+		color: '#fff',
+		width: 2
+	})
+});
+	
+var style = new ol.style.Style({
+	fill: new ol.style.Fill({
+	color: 'rgba(255, 255, 255, 0.2)'
+	}),
+	stroke: new ol.style.Stroke({
+		color: '#ffcc33',
+		width: 2
+	}),
+	image: new ol.style.Circle({
+		radius: 7,
+		fill: new ol.style.Fill({
+		color: '#ffcc33'
+		})
+	}),
+	text : text
+});
+
+return style;
+}
+//end test ####################################
+
+// creates a draw interaction
+function addDrawInteraction() {
+  // remove other interactions
+  map.removeInteraction(select_interaction);
+  map.removeInteraction(modify_interaction);
+  
+  // create the interaction
+  draw_interaction = new ol.interaction.Draw({
+    source: vector_layer.getSource(),
+    type: /** @type {ol.geom.GeometryType} */ ($geom_type.val())
+  });
+	// add it to the map
+  map.addInteraction(draw_interaction);
+  
+  // when a new feature has been drawn...
+  draw_interaction.on('drawend', function(event) {
+    // create a unique id
+    // it is later needed to delete features
+    var id = uid();
+    // give the feature this id
+    event.feature.setId(id);
+	
+//test ####################################
+	event.feature.set('id', new Date().getTime().toString());
+	var name = prompt("Please enter the name", "polygon");
+	if(name != "" && name !== null) {
+	event.feature.set('name', name);
+	} else {
+	event.feature.set('name', 'polygon');
+	}
+	event.feature.setStyle(createStyleWithText(event.feature.get('name')));
+	
+	var opttext = prompt("Please enter the tooltip", "tooltip");
+	if(opttext != "" && opttext !== null) {
+	event.feature.set('opttext', opttext);
+	} else {
+	event.feature.set('opttext', ' ');
+	}
+	event.feature.set('points_answer', '1');
+	event.feature.set('points_position', '1');
+
+	
+//end test ####################################
+    // save the changed data
+    saveData(); 
+  });
+}
+
+// add the draw interaction when the page is first shown
+addDrawInteraction();
+
+// shows data in textarea
+// replace this function by what you need
+function saveData() {
+	var  format = new ol.format.GeoJSON();
+	var data;
+	data = format.writeFeatures(vector_layer.getSource().getFeatures());
+	//$('#data').val(JSON.stringify(data, null, 4));
+	$('#geojson').val(data);
+	var json = $.parseJSON(data);
+	$('#single').val(json.type);
+
+	//create form
+	var features = vector_layer.getSource().getFeatures();
+
+	//create form for each polygon
+	var vectorlayer_features = vector_layer.getSource().getFeatures();
+	
+	$('#list').html('</br><div class="appm">Erstellte Polygone:</div>');
+	$('#list').append('<form method="POST">');
+
+		vectorlayer_features.forEach(function(source_feature) {
+		
+		var geom = source_feature.getGeometry().getCoordinates();
+		var name = source_feature.get('name');
+		var opttext = source_feature.get('opttext');
+		
+		var points_answer = source_feature.get('points_answer');
+		var points_position = source_feature.get('points_position');
+		
+		var id = source_feature.get('id');
+
+		//Coordinates - not needed
+		//$('#list form').append('<input type="text" size="50" value="' + geom + '" name="geometry" readonly="readonly" disabled="disabled" id="geometry_' + id + '"/>');
+		//Timestamp-ID - not needed
+		//$('#list form').append('<input type="text" value="' + id + '" id="id" name="id" readonly="readonly" disabled="disabled"/>');
+		
+		//Name
+		$('#list form').append('<tr><td align="left">Label </td><td><input type="text" value="' + name + '" id="name_' + id + '" name="name" /></td></tr>');
+		//Additional Text for the tooltip
+		$('#list form').append('<tr><td align="left">OptText </td><td><input type="text" value="' + opttext + '" id="opttext_' + id + '" name="opttext_" /></td></tr>');
+		// Points for correct name
+		$('#list form').append('<tr><td align="left">Points for Label </td><td><input type="number" value="' + points_answer + '" id="points_answer_' + id + '" name="points_answer_" min="0" max="5" size="4"/></td></tr>');
+		// Points for coorect position if name matches
+		$('#list form').append('<tr><td align="left">Points for Position: </td><td><input type="number" value="' + points_position + '" id="points_position_' + id + '" name="points_position_" min="0" max="5" size="4"/></td></tr>');
+		//Delete Button
+		$('#list form').append('<input type="button" class="btn btn-default" id="applybutton_' + id + '" value="Delete" onclick="deletebacktovector(' + id + ')"/>');
+		//Save Button
+		$('#list form').append('<input type="button" class="btn btn-default" id="savebutton_' + id + '" value="Save" onclick="savebacktovector(' + id + ')" /></br></br>');
+	});
+
+}
+
+//delete feature via buttonclick in form
+function deletebacktovector(apply_id) {
+	  	var vectorlayer_features = vector_layer.getSource().getFeatures();
+	  	vectorlayer_features.forEach(function(source_feature) {
+		//alert(source_feature.get('id'));
+		
+			if (source_feature.get('id') == apply_id) {
+				vector_layer.getSource().removeFeature(source_feature);
+				saveData();	
+			}
+		});
+};
+
+//apply the changes made in the form
+function savebacktovector(apply_id) {
+	  	var vectorlayer_features = vector_layer.getSource().getFeatures();
+	  	vectorlayer_features.forEach(function(source_feature) {
+		
+			if (source_feature.get('id') == apply_id) {
+				//TODO Button um dieses eine feature zu modifizieren
+				source_feature.set('name', $( "#name_" + apply_id ).val());
+				source_feature.set('opttext', $( "#opttext_" + apply_id ).val());
+
+				source_feature.set('points_answer', $( "#points_answer_" + apply_id ).val());
+				source_feature.set('points_position', $( "#points_position_" + apply_id ).val());
+				
+				source_feature.setStyle(createStyleWithText($( "#name_" + apply_id ).val()));
+
+				saveData();	
+			}
+		});
+};
+
+// clear map when user clicks on 'Delete all features'
+$("#delete").click(function() {
+  clearMap();
+});
+
+// clears the map and the output of the data
+function clearMap() {
+  vector_layer.getSource().clear();
+  if (select_interaction) {
+  	select_interaction.getFeatures().clear();
+  }
+  $('#geojson').val('{"type":"FeatureCollection","features":[]}');
+}
+
+// creates unique id's
+function uid(){
+  var id = 0;
+  return function() {
+    if (arguments[0] === 0) {
+      id = 0;
+    }
+    return id++;
+  }
+}
+	</script>
