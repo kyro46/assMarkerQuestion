@@ -4,18 +4,18 @@ include_once "./Modules/TestQuestionPool/classes/class.assQuestionGUI.php";
 include_once "./Modules/Test/classes/inc.AssessmentConstants.php";
 
  /**
- * The assPaintQuestionGUI class encapsulates the GUI representation
+ * The assOlpictureQuestionGUI class encapsulates the GUI representation
  * for Question-Type-Plugin.
  *
  * @author Yves Annanias <yves.annanias@llz.uni-halle.de>
  * @ingroup ModulesTestQuestionPool
  *
- * @ilctrl_iscalledby assPaintQuestionGUI: ilObjQuestionPoolGUI, ilObjTestGUI, ilQuestionEditGUI, ilTestExpressPageObjectGUI
+ * @ilctrl_iscalledby assOlpictureQuestionGUI: ilObjQuestionPoolGUI, ilObjTestGUI, ilQuestionEditGUI, ilTestExpressPageObjectGUI
  */
-class assPaintQuestionGUI extends assQuestionGUI
+class assOlpictureQuestionGUI extends assQuestionGUI
 {		
 	/**
-	 * @var assPaintQuestionPlugin	The plugin object
+	 * @var assOlpictureQuestionPlugin	The plugin object
 	 */
 	var $plugin = null;
 
@@ -29,9 +29,9 @@ class assPaintQuestionGUI extends assQuestionGUI
 	{
 		parent::__construct();
 		include_once "./Services/Component/classes/class.ilPlugin.php";
-		$this->plugin = ilPlugin::getPluginObject(IL_COMP_MODULE, "TestQuestionPool", "qst", "assPaintQuestion");
-		$this->plugin->includeClass("class.assPaintQuestion.php");
-		$this->object = new assPaintQuestion();
+		$this->plugin = ilPlugin::getPluginObject(IL_COMP_MODULE, "TestQuestionPool", "qst", "assOlpictureQuestion");
+		$this->plugin->includeClass("class.assOlpictureQuestion.php");
+		$this->object = new assOlpictureQuestion();
 		if ($id >= 0)
 		{
 			$this->object->loadFromDb($id);
@@ -58,7 +58,7 @@ class assPaintQuestionGUI extends assQuestionGUI
 		$form->setTitle($this->outQuestionType());
 		$form->setMultipart(FALSE);
 		$form->setTableWidth("100%");
-		$form->setId("assPaintQuestion");
+		$form->setId("assOlpictureQuestion");
 		// Baseinput: title, author, description, question, working time (assessment mode)		
 		$this->addBasicQuestionFormProperties($form);
 		

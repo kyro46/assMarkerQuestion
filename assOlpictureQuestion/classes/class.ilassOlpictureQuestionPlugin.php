@@ -2,23 +2,23 @@
 	include_once "./Modules/TestQuestionPool/classes/class.ilQuestionsPlugin.php";
 	
 	/**
-	* assPaintQuestion plugin
+	* assOlpictureQuestion plugin
 	*
 	* @author Yves Annanias <yves.annanias@llz.uni-halle.de>
 	* @version $Id$
 	* * @ingroup ModulesTestQuestionPool
 	*
 	*/
-	class ilassPaintQuestionPlugin extends ilQuestionsPlugin
+	class ilassOlpictureQuestionPlugin extends ilQuestionsPlugin
 	{
 		final function getPluginName()
 		{
-			return "assPaintQuestion";
+			return "assOlpictureQuestion";
 		}
 		
 		final function getQuestionType()
 		{
-			return "assPaintQuestion";
+			return "assOlpictureQuestion";
 		}
 		
 		final function getQuestionTypeTranslation()

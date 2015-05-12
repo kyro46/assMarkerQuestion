@@ -3,13 +3,13 @@
 include_once "./Modules/TestQuestionPool/classes/export/qti12/class.assQuestionExport.php";
 
 /**
-* Paint question export
+* Olpicture question export
 *
 * @author	Fred Neumann <fred.neumann@fau.de>
 * @version	$Id:  $
 * @ingroup ModulesTestQuestionPool
 */
-class assPaintQuestionExport extends assQuestionExport
+class assOlpictureQuestionExport extends assQuestionExport
 {
 	/**
 	* Returns a QTI xml representation of the question

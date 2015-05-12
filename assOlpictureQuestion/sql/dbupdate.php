@@ -1,9 +1,9 @@
 <#1>
 <?php
-	//Add Paint Question Type
+	//Add Olpicture Question Type
 	$res = $ilDB->queryF("SELECT * FROM qpl_qst_type WHERE type_tag = %s",
 		array('text'),
-		array('assPaintQuestion')
+		array('assOlpictureQuestion')
 	);
 	if ($res->numRows() == 0)
 	{
@@ -13,7 +13,7 @@
 
 		$affectedRows = $ilDB->manipulateF("INSERT INTO qpl_qst_type (question_type_id, type_tag, plugin) VALUES (%s, %s, %s)", 
 			array("integer", "text", "integer"),
-			array($max, 'assPaintQuestion', 1)
+			array($max, 'assOlpictureQuestion', 1)
 		);
 	}
 ?>
@@ -24,8 +24,8 @@
 			'question_fi'	=> array('type' => 'integer', 'length' => 4, 'notnull' => true ),
 			'image_file' 	=> array('type' => 'text', 'length' => 200, 'fixed' => false, 'notnull' => true )
 	);
-	$ilDB->createTable("il_qpl_qst_paint_image", $fields);
-	$ilDB->addPrimaryKey("il_qpl_qst_paint_image", array("question_fi"));	
+	$ilDB->createTable("il_qpl_qst_olpic_image", $fields);
+	$ilDB->addPrimaryKey("il_qpl_qst_olpic_image", array("question_fi"));	
 ?>
 <#3>
 <?php
@@ -41,24 +41,24 @@
 			//not needed, text is stored in geojson
 			'opttext'		=> array('type' => 'text', 'length' => 1000 )
 	);
-	$ilDB->createTable("il_qpl_qst_paint_check", $fields);
-	$ilDB->addPrimaryKey("il_qpl_qst_paint_check", array("question_fi"));	
+	$ilDB->createTable("il_qpl_qst_olpic_check", $fields);
+	$ilDB->addPrimaryKey("il_qpl_qst_olpic_check", array("question_fi"));	
 ?>
 <#4>
 <?php
 	// change type of geojson from char(1000) to longtext
-	$ilDB->manipulate("ALTER TABLE `il_qpl_qst_paint_check` CHANGE `geojson` `geojson` LONGTEXT NULL default NULL");
-	//$ilDB->addTableColumn('il_qpl_qst_paint_check','geojson2', array("type" => "text", "length" => 20000));
-	//$ilDB->manipulate("UPDATE il_qpl_qst_paint_check SET geojson2 = geojson");
-	//$ilDB->dropTableColumn('il_qpl_qst_paint_check','geojson');
-	//$ilDB->renameTableColumn('il_qpl_qst_paint_check','value2','geojson');
+	$ilDB->manipulate("ALTER TABLE `il_qpl_qst_olpic_check` CHANGE `geojson` `geojson` LONGTEXT NULL default NULL");
+	//$ilDB->addTableColumn('il_qpl_qst_olpic_check','geojson2', array("type" => "text", "length" => 20000));
+	//$ilDB->manipulate("UPDATE il_qpl_qst_olpic_check SET geojson2 = geojson");
+	//$ilDB->dropTableColumn('il_qpl_qst_olpic_check','geojson');
+	//$ilDB->renameTableColumn('il_qpl_qst_olpic_check','value2','geojson');
 ?>
 <#5>
 <?php
 	//add Levenshteindistance as Option
-	$ilDB->addTableColumn('il_qpl_qst_paint_check','levenshtein', array("type" => "integer", 'length' => 4, "default" => 3, 'notnull' => true));
+	$ilDB->addTableColumn('il_qpl_qst_olpic_check','levenshtein', array("type" => "integer", 'length' => 4, "default" => 3, 'notnull' => true));
 	//add Ordergrading as Option
-	$ilDB->addTableColumn('il_qpl_qst_paint_check','gradeorder', array('type' => 'integer', 'length' => 1, 'default' => 0));
+	$ilDB->addTableColumn('il_qpl_qst_olpic_check','gradeorder', array('type' => 'integer', 'length' => 1, 'default' => 0));
 	//prevent changing of input  for participants
-	$ilDB->addTableColumn('il_qpl_qst_paint_check','preventchanges', array('type' => 'integer', 'length' => 1, 'default' => 0));
+	$ilDB->addTableColumn('il_qpl_qst_olpic_check','preventchanges', array('type' => 'integer', 'length' => 1, 'default' => 0));
 ?>

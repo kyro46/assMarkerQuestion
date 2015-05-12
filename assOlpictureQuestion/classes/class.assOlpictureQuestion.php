@@ -10,7 +10,7 @@ include_once "./Modules/Test/classes/inc.AssessmentConstants.php";
  * @version	$Id:  $
  * @ingroup ModulesTestQuestionPool
  */
-class assPaintQuestion extends assQuestion
+class assOlpictureQuestion extends assQuestion
 {
 	private $plugin = null;	
 	// backgroundimage	
@@ -38,9 +38,9 @@ class assPaintQuestion extends assQuestion
 	// END ###################################################################
 	
 	/**
-	* assPaintQuestion constructor
+	* assOlpictureQuestion constructor
 	*
-	* The constructor takes possible arguments an creates an instance of the assPaintQuestion object.
+	* The constructor takes possible arguments an creates an instance of the assOlpictureQuestion object.
 	*
 	* @param string $title A title string to describe the question
 	* @param string $comment A comment string to describe the question
@@ -71,7 +71,7 @@ class assPaintQuestion extends assQuestion
 		if ($this->plugin == null)
 		{
 			include_once "./Services/Component/classes/class.ilPlugin.php";
-			$this->plugin = ilPlugin::getPluginObject(IL_COMP_MODULE, "TestQuestionPool", "qst", "assPaintQuestion");			
+			$this->plugin = ilPlugin::getPluginObject(IL_COMP_MODULE, "TestQuestionPool", "qst", "assOlpictureQuestion");			
 		}
 		return $this->plugin;
 	}
@@ -282,7 +282,7 @@ class assPaintQuestion extends assQuestion
 		$this->setEstimatedWorkingTime(substr($data["working_time"], 0, 2), substr($data["working_time"], 3, 2), substr($data["working_time"], 6, 2));			
 
 		// load backgroundImage
-		$resultImage= $ilDB->queryF("SELECT image_file FROM il_qpl_qst_paint_image WHERE question_fi = %s", array('integer'), array($question_id));
+		$resultImage= $ilDB->queryF("SELECT image_file FROM il_qpl_qst_olpic_image WHERE question_fi = %s", array('integer'), array($question_id));
 		if($ilDB->numRows($resultImage) == 1)
 		{
 			$data = $ilDB->fetchAssoc($resultImage);
@@ -291,7 +291,7 @@ class assPaintQuestion extends assQuestion
 		
 		//###################################
 		//Angepasste SQL-Abfrage
-		$resultCheck= $ilDB->queryF("SELECT line, color, radio_option, width, height, geojson, opttext, levenshtein, gradeorder, preventchanges FROM il_qpl_qst_paint_check WHERE question_fi = %s", array('integer'), array($question_id));
+		$resultCheck= $ilDB->queryF("SELECT line, color, radio_option, width, height, geojson, opttext, levenshtein, gradeorder, preventchanges FROM il_qpl_qst_olpic_check WHERE question_fi = %s", array('integer'), array($question_id));
 		//END ###################################
 		if($ilDB->numRows($resultCheck) == 1)
 		{
@@ -325,7 +325,7 @@ class assPaintQuestion extends assQuestion
 	}	
 
 	/**
-	* Saves a assPaintQuestion object to a database
+	* Saves a assOlpictureQuestion object to a database
 	*
 	* @access public
 	*/
@@ -334,14 +334,14 @@ class assPaintQuestion extends assQuestion
 		global $ilDB, $ilLog;
 		$this->saveQuestionDataToDb($original_id);			
 		// save background image
-		$affectedRows = $ilDB->manipulateF("DELETE FROM il_qpl_qst_paint_image WHERE question_fi = %s", 
+		$affectedRows = $ilDB->manipulateF("DELETE FROM il_qpl_qst_olpic_image WHERE question_fi = %s", 
 			array("integer"),
 			array($this->getId())
 		);
 		// save image		
 		if (!empty($this->image_filename))
 		{
-			$affectedRows = $ilDB->manipulateF("INSERT INTO il_qpl_qst_paint_image (question_fi, image_file) VALUES (%s, %s)", 
+			$affectedRows = $ilDB->manipulateF("INSERT INTO il_qpl_qst_olpic_image (question_fi, image_file) VALUES (%s, %s)", 
 				array("integer", "text"),
 				array(
 					$this->getId(),
@@ -350,11 +350,11 @@ class assPaintQuestion extends assQuestion
 			);
 		}
 		// save line and color option
-		$affectedRows = $ilDB->manipulateF("DELETE FROM il_qpl_qst_paint_check WHERE question_fi = %s", 
+		$affectedRows = $ilDB->manipulateF("DELETE FROM il_qpl_qst_olpic_check WHERE question_fi = %s", 
 			array("integer"),
 			array($this->getId())
 		);
-		$affectedRows = $ilDB->manipulateF("INSERT INTO il_qpl_qst_paint_check (question_fi, line, color, radio_option, width, height, geojson, opttext, levenshtein, gradeorder, preventchanges) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
+		$affectedRows = $ilDB->manipulateF("INSERT INTO il_qpl_qst_olpic_check (question_fi, line, color, radio_option, width, height, geojson, opttext, levenshtein, gradeorder, preventchanges) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
 				array("integer", "integer", "integer", "text", "integer", "integer", "text", "text", "integer", "integer", "integer"),
 				array(
 					$this->getId(),
@@ -398,7 +398,7 @@ class assPaintQuestion extends assQuestion
 	}
 
 /**
-* Duplicates an assPaintQuestion
+* Duplicates an assOlpictureQuestion
 *
 * @access public
 */
@@ -461,7 +461,7 @@ class assPaintQuestion extends assQuestion
 	}
 
 	/**
-	* Copies an assPaintQuestion object
+	* Copies an assOlpictureQuestion object
 	*
 	* @access public
 	*/
@@ -870,7 +870,7 @@ class assPaintQuestion extends assQuestion
 		if (strlen($geojsonfromdoc) > 0)
 		// END ##############
 		{
-			$filename = $this->getFileUploadPath($test_id, $active_id).time()."_PaintTask.png";
+			$filename = $this->getFileUploadPath($test_id, $active_id).time()."_OlpictureTask.png";
 			$entered_values = true;
 			$next_id = $ilDB->nextId("tst_solutions");
 			$affectedRows = $ilDB->insert("tst_solutions", array(
@@ -942,7 +942,7 @@ class assPaintQuestion extends assQuestion
 	*/
 	function getQuestionType()
 	{
-		return "assPaintQuestion";
+		return "assOlpictureQuestion";
 	}
 	
 	/**
@@ -1041,8 +1041,8 @@ class assPaintQuestion extends assQuestion
 	*/
 	function fromXML(&$item, &$questionpool_id, &$tst_id, &$tst_object, &$question_counter, &$import_mapping)
 	{
-		$this->getPlugin()->includeClass("import/qti12/class.assPaintQuestionImport.php");
-		$import = new assPaintQuestionImport($this);
+		$this->getPlugin()->includeClass("import/qti12/class.assOlpictureQuestionImport.php");
+		$import = new assOlpictureQuestionImport($this);
 		$import->fromXML($item, $questionpool_id, $tst_id, $tst_object, $question_counter, $import_mapping);
 	}
 	
@@ -1055,8 +1055,8 @@ class assPaintQuestion extends assQuestion
 	*/
 	function toXML($a_include_header = true, $a_include_binary = true, $a_shuffle = false, $test_output = false, $force_image_references = false)
 	{
-		$this->getPlugin()->includeClass("export/qti12/class.assPaintQuestionExport.php");
-		$export = new assPaintQuestionExport($this);
+		$this->getPlugin()->includeClass("export/qti12/class.assOlpictureQuestionExport.php");
+		$export = new assOlpictureQuestionExport($this);
 		return $export->toXML($a_include_header, $a_include_binary, $a_shuffle, $test_output, $force_image_references);
 	}
 }

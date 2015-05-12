@@ -11,7 +11,7 @@ require_once 'Modules/TestQuestionPool/classes/feedback/class.ilAssSingleOptionQ
  *
  */
 
-class ilAssPaintQuestionFeedback extends ilAssSingleOptionQuestionFeedback
+class ilAssOlpictureQuestionFeedback extends ilAssSingleOptionQuestionFeedback
 {
     
 }
