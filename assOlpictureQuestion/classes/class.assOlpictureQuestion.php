@@ -15,16 +15,6 @@ class assOlpictureQuestion extends assQuestion
 	private $plugin = null;	
 	// backgroundimage	
 	var $image_filename = "";
-	// brushsize choosable? false - 0, true - 1
-	var $lineValue = 0;
-	// colourselection enabled? false - 0, true - 1
-	var $colorValue = 0;	
-	// canvas size for backgroundimage or individual
-	var $radioOption = 'radioImageSize';
-	// canvas width
-	var $canvasWidth = 100;
-	// canvas height
-	var $canvasHeight = 100;
 
 	//###################################################################
 	// geojson
@@ -106,62 +96,6 @@ class assOlpictureQuestion extends assQuestion
 		$file = $this->getImagePath() . $this->getImageFilename();
 		@unlink($file); // delete image from folder
 		$this->image_filename = "";
-	}
-	
-	function getLineValue()	
-	{
-		return $this->lineValue;
-	}
-	
-	function getColorValue()	
-	{
-		return $this->colorValue;
-	}
-	
-	function setLineValue($value)
-	{		
-		if ($value == 1)
-			$this->lineValue = 1;
-		else
-			$this->lineValue = 0;			
-	}
-	
-	function setColorValue($value)
-	{
-		if ($value == 1)
-			$this->colorValue = 1;
-		else
-			$this->colorValue = 0;
-	}
-	
-	function setRadioOption($value)
-	{		
-		$this->radioOption = $value;
-	}
-	
-	function getRadioOption()
-	{
-		return $this->radioOption;
-	}
-	
-	function setCanvasHeight($value)
-	{
-		$this->canvasHeight = $value;
-	}
-	
-	function getCanvasHeight()
-	{
-		return $this->canvasHeight;
-	}
-	
-	function setCanvasWidth($value)
-	{
-		$this->canvasWidth = $value;
-	}
-	
-	function getCanvasWidth()
-	{
-		return $this->canvasWidth;
 	}
 
 	// new Getter/Setter #############################################
@@ -291,18 +225,11 @@ class assOlpictureQuestion extends assQuestion
 		
 		//###################################
 		//Angepasste SQL-Abfrage
-		$resultCheck= $ilDB->queryF("SELECT line, color, radio_option, width, height, geojson, opttext, levenshtein, gradeorder, preventchanges FROM il_qpl_qst_olpic_check WHERE question_fi = %s", array('integer'), array($question_id));
+		$resultCheck= $ilDB->queryF("SELECT geojson, opttext, levenshtein, gradeorder, preventchanges FROM il_qpl_qst_olpic_check WHERE question_fi = %s", array('integer'), array($question_id));
 		//END ###################################
 		if($ilDB->numRows($resultCheck) == 1)
 		{
 			$data = $ilDB->fetchAssoc($resultCheck);
-			if ($data["line"]==1)
-				$this->lineValue = 1;
-			else $this->lineValue = 0;
-			$this->colorValue = $data["color"];
-			$this->setRadioOption($data["radio_option"]);
-			$this->setCanvasWidth($data["width"]);
-			$this->setCanvasHeight($data["height"]);
 			//#########################################################
 			$this->setGeoJSON($data["geojson"]);
 			$this->setOptText($data["opttext"]);
@@ -354,15 +281,10 @@ class assOlpictureQuestion extends assQuestion
 			array("integer"),
 			array($this->getId())
 		);
-		$affectedRows = $ilDB->manipulateF("INSERT INTO il_qpl_qst_olpic_check (question_fi, line, color, radio_option, width, height, geojson, opttext, levenshtein, gradeorder, preventchanges) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", 
-				array("integer", "integer", "integer", "text", "integer", "integer", "text", "text", "integer", "integer", "integer"),
+		$affectedRows = $ilDB->manipulateF("INSERT INTO il_qpl_qst_olpic_check (question_fi, geojson, opttext, levenshtein, gradeorder, preventchanges) VALUES (%s, %s, %s, %s, %s, %s)", 
+				array("integer", "text", "text", "integer", "integer", "integer"),
 				array(
 					$this->getId(),
-					$this->lineValue,
-					$this->colorValue,
-					$this->radioOption,
-					$this->canvasWidth,
-					$this->canvasHeight,
 					$this->geojson,
 					$this->opttext,
 					$this->levenshtein,
@@ -845,14 +767,13 @@ class assOlpictureQuestion extends assQuestion
 		);
 
 		$entered_values = false;		
-		$value = $_POST['answerImage'];		
+		//$value = $_POST['answerImage'];		
 		
 		// new #######################
 		
 		$geojsonfromdoc = $_POST['geojson'];
 		
 		// end #######################
-		
 		
 		$result = $ilDB->queryF("SELECT test_fi FROM tst_active WHERE active_id = %s",
 			array('integer'),
@@ -886,6 +807,7 @@ class assOlpictureQuestion extends assQuestion
 				"tstamp" => array("integer", time())
 			));
 			
+			/*
 			if (!@file_exists($this->getFileUploadPath($test_id, $active_id))) 
 				ilUtil::makeDirParents($this->getFileUploadPath($test_id, $active_id));
 			
@@ -899,6 +821,7 @@ class assOlpictureQuestion extends assQuestion
 			$image = fopen($imageInfo, 'r');
 			file_put_contents($filename, $image);
 			fclose($image);
+			*/
 		}
 		
 		if ($entered_values)

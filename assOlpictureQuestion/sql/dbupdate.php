@@ -19,7 +19,7 @@
 ?>
 <#2>
 <?php
-	//Save Backgroundimage
+	//Backgroundimage
 	$fields = array(
 			'question_fi'	=> array('type' => 'integer', 'length' => 4, 'notnull' => true ),
 			'image_file' 	=> array('type' => 'text', 'length' => 200, 'fixed' => false, 'notnull' => true )
@@ -29,17 +29,14 @@
 ?>
 <#3>
 <?php
-	//Enable Colourselection, Brushsize, Canvassize definition
+	//Options
 	$fields = array(
 			'question_fi'	=> array('type' => 'integer', 'length' => 4, 'notnull' => true ),
-			'line' 			=> array('type' => 'integer', 'length' => 1),
-			'color' 		=> array('type' => 'integer', 'length' => 1),
-			'radio_option' 	=> array('type' => 'text', 'length' => 16, 'notnull' => true, 'fixed' => false, 'default' => 'radioImageSize'),		
-			'width' 		=> array('type' => 'integer', 'length' => 8, 'default' => 100 ),
-			'height' 		=> array('type' => 'integer', 'length' => 8, 'default' => 100 ),
 			'geojson' 		=> array('type' => 'text', 'length' => 1000, 'notnull' => true  ),
-			//not needed, text is stored in geojson
-			'opttext'		=> array('type' => 'text', 'length' => 1000 )
+			'opttext'		=> array('type' => 'text', 'length' => 1000 ),
+			'levenshtein'	=> array("type" => "integer", 'length' => 4, "default" => 3, 'notnull' => true),
+			'gradeorder'	=> array('type' => 'integer', 'length' => 1, 'default' => 0),
+			'preventchanges'	=> array('type' => 'integer', 'length' => 1, 'default' => 0)
 	);
 	$ilDB->createTable("il_qpl_qst_olpic_check", $fields);
 	$ilDB->addPrimaryKey("il_qpl_qst_olpic_check", array("question_fi"));	
@@ -48,17 +45,4 @@
 <?php
 	// change type of geojson from char(1000) to longtext
 	$ilDB->manipulate("ALTER TABLE `il_qpl_qst_olpic_check` CHANGE `geojson` `geojson` LONGTEXT NULL default NULL");
-	//$ilDB->addTableColumn('il_qpl_qst_olpic_check','geojson2', array("type" => "text", "length" => 20000));
-	//$ilDB->manipulate("UPDATE il_qpl_qst_olpic_check SET geojson2 = geojson");
-	//$ilDB->dropTableColumn('il_qpl_qst_olpic_check','geojson');
-	//$ilDB->renameTableColumn('il_qpl_qst_olpic_check','value2','geojson');
-?>
-<#5>
-<?php
-	//add Levenshteindistance as Option
-	$ilDB->addTableColumn('il_qpl_qst_olpic_check','levenshtein', array("type" => "integer", 'length' => 4, "default" => 3, 'notnull' => true));
-	//add Ordergrading as Option
-	$ilDB->addTableColumn('il_qpl_qst_olpic_check','gradeorder', array('type' => 'integer', 'length' => 1, 'default' => 0));
-	//prevent changing of input  for participants
-	$ilDB->addTableColumn('il_qpl_qst_olpic_check','preventchanges', array('type' => 'integer', 'length' => 1, 'default' => 0));
 ?>
