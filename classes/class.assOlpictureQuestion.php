@@ -522,7 +522,7 @@ class assOlpictureQuestion extends assQuestion
 	 * @param boolean $returndetails (deprecated !!)
 	 * @access public
 	 */
-	function calculateReachedPoints($active_id, $pass = NULL, $returndetails = FALSE)
+	function calculateReachedPoints($active_id, $pass = NULL, $authorizedSolution = true, $returndetails = false)
 	{
 		/* Documentation
 		 *
@@ -743,7 +743,7 @@ class assOlpictureQuestion extends assQuestion
 	* @access public
 	* @see $answers
 	*/
-	function saveWorkingData($active_id, $pass = NULL)
+	function saveWorkingData($active_id, $pass = NULL, $authorized = true)
 	{
 		global $ilDB;
 		global $ilUser;
