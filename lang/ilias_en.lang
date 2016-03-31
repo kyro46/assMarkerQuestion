@@ -23,3 +23,8 @@ useImageSize#:#Use size of background image (800 x 700 if there is no image)
 useOwnSize#:#Use own size
 width#:#width
 height#:#height
+levenshtein#:#Levenshteindistance
+gradeorder#:#Grade order
+preventchanges#:#Prevent changes of a givven solution
+openlayers_area#:#OpenLayers area
+how_to_use#:#TODO - How to use

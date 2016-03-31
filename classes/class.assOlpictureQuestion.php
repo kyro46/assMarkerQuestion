@@ -4,7 +4,7 @@ include_once "./Modules/TestQuestionPool/classes/class.assQuestion.php";
 include_once "./Modules/Test/classes/inc.AssessmentConstants.php";
 
 /**
- * Class for TemplateQuestion Question
+ * Class for assOlpictureQuestion Question
  *
  * @author Christoph Jobst <christoph.jobst@llz.uni-halle.de>
  * @version	$Id:  $

@@ -23,3 +23,8 @@ useImageSize#:#Nutze die Größe des Hintergrundbildes (800 x 700 wenn kein Bild
 useOwnSize#:#Eigene Angaben
 width#:#Breite
 height#:#Höhe
+levenshtein#:#Levenshteinabstand
+gradeorder#:#Reihenfolge bewerten
+preventchanges#:#Nachträgliche Änderungen verhindern
+openlayers_area#:#OpenLayers-Bereich
+how_to_use#:#TODO - Nutzungshilfe
