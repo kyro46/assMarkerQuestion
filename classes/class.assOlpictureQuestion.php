@@ -6,7 +6,7 @@ include_once "./Modules/Test/classes/inc.AssessmentConstants.php";
 /**
  * Class for TemplateQuestion Question
  *
- * @author Yves Annanias <yves.annanias@llz.uni-halle.de>
+ * @author Christoph Jobst <christoph.jobst@llz.uni-halle.de>
  * @version	$Id:  $
  * @ingroup ModulesTestQuestionPool
  */

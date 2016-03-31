@@ -7,7 +7,7 @@ include_once "./Modules/Test/classes/inc.AssessmentConstants.php";
  * The assOlpictureQuestionGUI class encapsulates the GUI representation
  * for Question-Type-Plugin.
  *
- * @author Yves Annanias <yves.annanias@llz.uni-halle.de>
+ * @author Christoph Jobst <christoph.jobst@llz.uni-halle.de>
  * @ingroup ModulesTestQuestionPool
  *
  * @ilctrl_iscalledby assOlpictureQuestionGUI: ilObjQuestionPoolGUI, ilObjTestGUI, ilQuestionEditGUI, ilTestExpressPageObjectGUI

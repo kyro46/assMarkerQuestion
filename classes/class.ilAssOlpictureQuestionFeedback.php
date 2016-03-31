@@ -5,8 +5,7 @@ require_once 'Modules/TestQuestionPool/classes/feedback/class.ilAssSingleOptionQ
 /**
  * Cas Question object
  *
- * @author Fred Neumann <fred.neumann@ili.fau.de>
- * @author Jesus Copado <jesus.copado@ili.fau.de>
+ * @author Christoph Jobst <christoph.jobst@llz.uni-halle.de>
  * @version $Id$
  *
  */

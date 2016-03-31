@@ -4,7 +4,7 @@
 	/**
 	* assOlpictureQuestion plugin
 	*
-	* @author Yves Annanias <yves.annanias@llz.uni-halle.de>
+	* @author Christoph Jobst <christoph.jobst@llz.uni-halle.de>
 	* @version $Id$
 	* * @ingroup ModulesTestQuestionPool
 	*
