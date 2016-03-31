@@ -92,11 +92,11 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 		
 		$tpl->addJavaScript($plugin->getDirectory().'/js/ol-debug.js');
 		//$tpl->addJavaScript($plugin->getDirectory().'/js/jquery-ui-1.10.3.min.js');
-		$tpl->addJavaScript($plugin->getDirectory().'/js/bootstrap.js');
+		//$tpl->addJavaScript($plugin->getDirectory().'/js/bootstrap.js');
 		
 		
-		$tpl->addCss($plugin->getDirectory().'/css/bootstrap.css');
-		$tpl->addCss($plugin->getDirectory().'/css/bootstrap-responsive.css');
+		//$tpl->addCss($plugin->getDirectory().'/css/bootstrap.css');
+		//$tpl->addCss($plugin->getDirectory().'/css/bootstrap-responsive.css');
 		$tpl->addCss($plugin->getDirectory().'/css/layout.css');
 		$tpl->addCss($plugin->getDirectory().'/css/ol.css');
 		
@@ -282,10 +282,10 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 		//openlayers preview output #############
 		
 		$tpl->addJavaScript($plugin->getDirectory().'/js/ol-debug.js');
-		$tpl->addJavaScript($plugin->getDirectory().'/js/bootstrap.js');
+		//$tpl->addJavaScript($plugin->getDirectory().'/js/bootstrap.js');
 
-		$tpl->addCss($plugin->getDirectory().'/css/bootstrap.css');
-		$tpl->addCss($plugin->getDirectory().'/css/bootstrap-responsive.css');
+		//$tpl->addCss($plugin->getDirectory().'/css/bootstrap.css');
+		//$tpl->addCss($plugin->getDirectory().'/css/bootstrap-responsive.css');
 		$tpl->addCss($plugin->getDirectory().'/css/layout.css');
 		$tpl->addCss($plugin->getDirectory().'/css/ol.css');
 		
@@ -376,10 +376,10 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 		//openlayers preview output #############
 		
 		$tpl->addJavaScript($plugin->getDirectory().'/js/ol-debug.js');
-		$tpl->addJavaScript($plugin->getDirectory().'/js/bootstrap.js');
+		//$tpl->addJavaScript($plugin->getDirectory().'/js/bootstrap.js');
 		
-		$tpl->addCss($plugin->getDirectory().'/css/bootstrap.css');
-		$tpl->addCss($plugin->getDirectory().'/css/bootstrap-responsive.css');
+		//$tpl->addCss($plugin->getDirectory().'/css/bootstrap.css');
+		//$tpl->addCss($plugin->getDirectory().'/css/bootstrap-responsive.css');
 		$tpl->addCss($plugin->getDirectory().'/css/layout.css');
 		$tpl->addCss($plugin->getDirectory().'/css/ol.css');
 		
