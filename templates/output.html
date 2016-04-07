@@ -23,11 +23,11 @@
     </style>
     <div id="map" class="map"><div id="info"></div></div>
     <div>
-      <label>Interaction type:  &nbsp;</label>
-      <label>draw</label>
       <input type="radio" id="interaction_type_draw" name="interaction_type" value="draw" checked>
-      <label>modify</label>
+      <label>Punkte erstellen</label>      
+      <br/>
       <input type="radio" id="interaction_type_modify" name="interaction_type" value="modify">
+      <label>Drag & Drop</label>
     </div>
     <div style="display:none">
       <label>Geometry type</label>
@@ -37,13 +37,15 @@
         <option value="Polygon">Polygon</option>
       </select>
     </div>
-    <div id="delete" style="text-decoration:underline;cursor:pointer">
-      Delete all features
-    </div>
+
 	<div id="list">
 	</div>
-	<label>Data:</label>
-    <textarea id="geojson" name="geojson" rows="4" style="width:100%"">{GEOJSON_TEXT}</textarea>
+	<br/>
+    <input type="button" class="btn btn-default" id="deleteall" value="Alle Punkte l&ouml;schen" onclick="clearMap();"/>
+    <br/>
+    <br/>
+	<label>Debug Data:</label>
+    <textarea id="geojson" name="geojson" rows="4" style="width:100%">{GEOJSON_TEXT}</textarea>
     
 	<script>
 	// create a vector layer used for editing
@@ -351,7 +353,7 @@ function saveData() {
 	var obj = JSON.parse(window.atob('{FEATURES}'));
 
 	
-	$('#list').html('</br><div class="appm">Created Points:</div>');
+	$('#list').html('</br><div class="appm">Bisher erstellte Punkte:</div>');
 	$('#list').append('<form method="POST">');
 
 		vectorlayer_features.forEach(function(source_feature) {
@@ -371,11 +373,11 @@ function saveData() {
 		//$('#list form').append('<input type="text" value="' + id + '" id="id" name="id" readonly="readonly" disabled="disabled"/>');
 		
 		//Name
-		$('#list form').append('<tr><td align="left">Label </td><td><input type="text" value="' + name + '" id="name_' + id + '" name="name" /></td></tr>');
+		$('#list form').append('<tr><td align="left">Punkt: </td><td><input disabled type="text" value="' + name + '" id="name_' + id + '" name="name" /></td></tr>');
 		//Delete Button
 		$('#list form').append('<input type="button" class="btn btn-default" id="applybutton_' + id + '" value="Delete" onclick="deletebacktovector(' + id + ')"/>');
 		//Save Button
-		$('#list form').append('<input type="button" class="btn btn-default" id="savebutton_' + id + '" value="Change" onclick="savebacktovector(' + id + ')" /></br></br>');
+		//$('#list form').append('<input type="button" class="btn btn-default" disabled id="savebutton_' + id + '" value="Change" onclick="savebacktovector(' + id + ')" /></br></br>');
 		
 		for (var key in obj) {
 			//var distance = levenshteinDistance(key, name);
@@ -481,6 +483,8 @@ function clearMap() {
   	select_interaction.getFeatures().clear();
   }
   $('#geojson').val('{"type":"FeatureCollection","features":[]}');
+  $('#list').html('</br><div class="appm">Alle Punkte entfernt</div>');
+
 }
 
 // creates unique id's
