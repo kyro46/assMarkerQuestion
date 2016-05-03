@@ -277,7 +277,6 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 		global $tpl;			
 		$plugin       = $this->object->getPlugin();		
 		$template     = $plugin->getTemplate("output.html");	
-		$template->setVariable("QUESTIONTEXT", $this->object->prepareTextareaOutput($this->object->getQuestion(), TRUE));
 
 		//openlayers preview output #############
 		
@@ -326,7 +325,7 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 		$template->setVariable("LEVENSHTEIN", $this->object->getLevenshtein());
 		
 		// END ##################################
-		
+		$template->setVariable("QUESTIONTEXT", $this->object->prepareTextareaOutput($this->object->getQuestion(), TRUE));
 		$template->setVariable("RESUME", "");
 		
 		$questionoutput = $template->get();
