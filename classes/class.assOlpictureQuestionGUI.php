@@ -281,18 +281,17 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 
 		//openlayers preview output #############
 		
-		$tpl->addJavaScript($plugin->getDirectory().'/js/ol-debug.js');
-		//$tpl->addJavaScript($plugin->getDirectory().'/js/bootstrap.js');
-
-		//$tpl->addCss($plugin->getDirectory().'/css/bootstrap.css');
-		//$tpl->addCss($plugin->getDirectory().'/css/bootstrap-responsive.css');
-		$tpl->addCss($plugin->getDirectory().'/css/layout.css');
-		$tpl->addCss($plugin->getDirectory().'/css/ol.css');
-		
-		
 		$template = $plugin->getTemplate("output.html");	
 				
 		$template->setVariable("IMAGE_PATH", $this->object->getImagePathWeb().$this->object->getImageFilename());
+
+		$tpl->addJavaScript($plugin->getDirectory().'/js/ol.js');
+		$tpl->addJavaScript($plugin->getDirectory().'/js/ol3-contextmenu.js');
+		//$tpl->addJavaScript($plugin->getDirectory().'/js/contextmenu.js');
+		
+		$tpl->addCss($plugin->getDirectory().'/css/ol.css');
+		$tpl->addCss($plugin->getDirectory().'/css/ol3-contextmenu.css');
+		$tpl->addCss($plugin->getDirectory().'/css/contextmenu.css');
 		
 		/* no previous data needed for preview
 		$geojsonToDoc = $this->object->getGeoJSON();
@@ -375,13 +374,13 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 		
 		//openlayers preview output #############
 		
-		$tpl->addJavaScript($plugin->getDirectory().'/js/ol-debug.js');
-		//$tpl->addJavaScript($plugin->getDirectory().'/js/bootstrap.js');
+		$tpl->addJavaScript($plugin->getDirectory().'/js/ol.js');
+		$tpl->addJavaScript($plugin->getDirectory().'/js/ol3-contextmenu.js');
+		$tpl->addJavaScript($plugin->getDirectory().'/js/contextmenu.js');
 		
-		//$tpl->addCss($plugin->getDirectory().'/css/bootstrap.css');
-		//$tpl->addCss($plugin->getDirectory().'/css/bootstrap-responsive.css');
-		$tpl->addCss($plugin->getDirectory().'/css/layout.css');
 		$tpl->addCss($plugin->getDirectory().'/css/ol.css');
+		$tpl->addCss($plugin->getDirectory().'/css/ol3-contextmenu.css');
+		$tpl->addCss($plugin->getDirectory().'/css/contextmenu.css');
 		
 		
 		$template = $plugin->getTemplate("output.html");
