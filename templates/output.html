@@ -145,27 +145,46 @@
       var 
         view = new ol.View({
           center: [0, 0],
-          zoom: 3,
-          minZoom: 2,
-          maxZoom: 20
+          zoom: 0,
+  		  projection: 'EPSG:4326',
+          minZoom: 0,
+          maxZoom: 4
         }),
         vectorLayer = new ol.layer.Vector({
-          source: new ol.source.Vector()
+          source: new ol.source.Vector({
+        	  //url: 'features.json',
+        	  wrapX: false,
+        	  format: new ol.format.GeoJSON().readFeature({GEOJSON})
+        	})
         }),
-        baseLayer = new ol.layer.Tile({
+        /*baseLayer = new ol.layer.Tile({
           preload: Infinity,
           opacity: 1,
           source: new ol.source.MapQuest({layer: 'osm'})
-        }),
+        }),*/
+        imageLayer = new ol.layer.Image({
+    		title: "image",
+    		opacity: 1,
+    		source: new ol.source.ImageStatic({
+    		  url: '{IMAGE_PATH}',
+      		  projection: 'EPSG:4326',
+    		  //url: 'uhd.jpg',
+    		  //ToDo Adjust dimensions according to uploaded image: +/-x:2 and +/-y:2 minx,miny,maxx,maxy
+    		  imageExtent: [-390, -303, 390, 303],
+    		  //Size in Pixels:
+    		  imageSize: [780, 606]
+    		})
+    	  }),
         map = new ol.Map({
           interactions: ol.interaction.defaults().extend([new app.Drag()]),
           logo: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" ,
           target: doc.getElementById('map'),
-          loadTilesWhileAnimating: true,
+          //loadTilesWhileAnimating: true,
           view: view,
-          layers: [vectorLayer]
+          layers: [imageLayer, vectorLayer]
         }),
         // from https://github.com/DmitryBaranovskiy/raphael
+        
         elastic = function(t) {
           return Math.pow(2, -10 * t) * Math.sin((t - 0.075) * (2 * Math.PI) / 0.3) + 1;
         },
@@ -180,7 +199,7 @@
         },
         marker = function(obj){
           var
-            coord4326 = ol.proj.transform(obj.coordinate, 'EPSG:3857', 'EPSG:4326'),
+            coord4326 = obj.coordinate,
             template = 'Coordinate is ({x} | {y})',
             iconStyle = new ol.style.Style({
               image: new ol.style.Icon({
