@@ -1,6 +1,6 @@
  <p>{QUESTIONTEXT}</p>
     <div id="map"></div>
-    <label  id="geojson" name="geojson">{GEOJSON_TEXT}</label>      
+    <textarea   id="geojson" name="geojson">{GEOJSON_TEXT}</textarea >      
     
     
     <script>
@@ -93,11 +93,7 @@
 
         this.coordinate_[0] = evt.coordinate[0];
         this.coordinate_[1] = evt.coordinate[1];
-        
-        //this.feature_.getStyle().getText().setText("(" + this.coordinate_[0] + " | " + this.coordinate_[1] + ")");
-        
-        //document.getElementById('coor').innerHTML = this.feature_.getStyle().getText().getText() + "    "    +this.coordinate_[0] + "   " + this.coordinate_[1];
-        
+
     	var  format = new ol.format.GeoJSON();
     	var data;
     	data = format.writeFeatures(vectorLayer.getSource().getFeatures());
@@ -141,7 +137,9 @@
       };
 
       //End drag interaction
-      
+
+      var existingGeoJSON = {GEOJSON};
+
       var 
         view = new ol.View({
           center: [0, 0],
@@ -152,9 +150,8 @@
         }),
         vectorLayer = new ol.layer.Vector({
           source: new ol.source.Vector({
-        	  //url: 'features.json',
         	  wrapX: false,
-        	  format: new ol.format.GeoJSON().readFeature({GEOJSON})
+        	  format: new ol.format.GeoJSON()//.readFeatures(existingGeoJSON)
         	})
         }),
         /*baseLayer = new ol.layer.Tile({
@@ -226,18 +223,50 @@
           
     	  var name = prompt("Please enter the name", "My Point");
 
+    	  if (name == null) {
+    		  name = "";
+    	  }
+
+    	  
     	  //Save Name to Label and to JSON, refresh Layer
     	  feature.getStyle().getText().setText(name);
     	  feature.set('name', name);
 
           vectorLayer.getSource().addFeature(feature);
-          
+
     		var  format = new ol.format.GeoJSON();
     		var data;
     		data = format.writeFeatures(vectorLayer.getSource().getFeatures());
     		document.getElementById('geojson').innerHTML = data;
         }
       ;
+      
+    var existingFeatures = new ol.format.GeoJSON().readFeatures(existingGeoJSON);
+    vectorLayer.getSource().addFeatures(existingFeatures);
+    var listOfExistingFeatures = vectorLayer.getSource().getFeatures();
+    for (var partFeature of listOfExistingFeatures) {
+    	
+        var markerStyle = new ol.style.Style({
+            image: new ol.style.Icon({
+              scale: .6,
+              src: markerImage
+            }),
+            text: new ol.style.Text({
+              offsetY: 25,
+              text: partFeature.get('name'),
+              font: '15px Open Sans,sans-serif',
+              fill: new ol.style.Fill({ color: '#111' }),
+              stroke: new ol.style.Stroke({
+                color: '#eee', width: 2
+              })
+            })
+          })
+    	
+    	partFeature.setStyle(markerStyle);
+
+    }
+      
+      
       var contextmenu_items = [
          {
           text: 'Add a Marker',
@@ -319,7 +348,7 @@
         
         map.getTarget().style.cursor = hit ? 'pointer' : '';
       });
-
+      
     })(window, document);
     	
     </script>
