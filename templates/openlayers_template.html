@@ -99,15 +99,27 @@ var createStyleFunction = function() {
   };
 };	
 
+var existingGeoJSON = {GEOJSON};
+
+
 var vector_layer = new ol.layer.Vector({
-	  name: 'my_vectorlayer',
-	  source: new ol.source.GeoJSON(
-			    /** @type {olx.source.GeoJSONOptions} */ ({
-			        object: {GEOJSON}
-			    })
-			   ),
-	 style: createStyleFunction()
-	});
+    source: new ol.source.Vector({
+  	  wrapX: false,
+  	  format: new ol.format.GeoJSON()//.readFeatures(existingGeoJSON)
+  	})
+  });
+
+//TODO style exisating stuff
+  var existingFeatures = new ol.format.GeoJSON().readFeatures(existingGeoJSON);
+  vector_layer.getSource().addFeatures(existingFeatures);
+    var listOfExistingFeatures = vector_layer.getSource().getFeatures();
+    for (var partFeature of listOfExistingFeatures) {
+    	createStyleFunction(partFeature);
+
+    }
+
+
+
 
 // Old vector_layer definition without GeoJSON
 /*
@@ -146,9 +158,11 @@ var map = new ol.Map({
     vector_layer
   ],
 	view: new ol.View({
-		center: [0, 0],
-		projection: 'EPSG:4326',
-		zoom: 0
+        center: [0, 0],
+        zoom: 0,
+		  projection: 'EPSG:4326',
+        minZoom: 0,
+        maxZoom: 4
 	})
 });
 

@@ -89,7 +89,7 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 		$item = new ilCustomInputGUI($this->plugin->txt('openlayers_area'));
 		$item->setInfo($this->plugin->txt('how_to_use'));
 		
-		
+		/*
 		$tpl->addJavaScript($plugin->getDirectory().'/js/ol-debug.js');
 		//$tpl->addJavaScript($plugin->getDirectory().'/js/jquery-ui-1.10.3.min.js');
 		//$tpl->addJavaScript($plugin->getDirectory().'/js/bootstrap.js');
@@ -99,6 +99,15 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 		//$tpl->addCss($plugin->getDirectory().'/css/bootstrap-responsive.css');
 		$tpl->addCss($plugin->getDirectory().'/css/layout.css');
 		$tpl->addCss($plugin->getDirectory().'/css/ol.css');
+		*/
+		
+		$tpl->addJavaScript($plugin->getDirectory().'/js/ol.js');
+		$tpl->addJavaScript($plugin->getDirectory().'/js/ol3-contextmenu.js');
+		//$tpl->addJavaScript($plugin->getDirectory().'/js/contextmenu.js');
+		
+		$tpl->addCss($plugin->getDirectory().'/css/ol.css');
+		$tpl->addCss($plugin->getDirectory().'/css/ol3-contextmenu.css');
+		$tpl->addCss($plugin->getDirectory().'/css/contextmenu.css');
 		
 		
 		$template=$this->plugin->getTemplate('openlayers_template.html');
@@ -467,9 +476,22 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 			$user_solution = array();
 		}
 
+
 		$plugin       = $this->object->getPlugin();		
 		$template     = $plugin->getTemplate("solution.html");
 		$output = $this->object->getQuestion();			
+		
+		
+		$tpl->addJavaScript($plugin->getDirectory().'/js/ol.js');
+		$tpl->addJavaScript($plugin->getDirectory().'/js/ol3-contextmenu.js');
+		//$tpl->addJavaScript($plugin->getDirectory().'/js/contextmenu.js');
+		
+		$tpl->addCss($plugin->getDirectory().'/css/ol.css');
+		$tpl->addCss($plugin->getDirectory().'/css/ol3-contextmenu.css');
+		$tpl->addCss($plugin->getDirectory().'/css/contextmenu.css');
+		
+		
+		
 		
 		if ($show_correct_solution)
 		{			
@@ -568,6 +590,21 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 			$template->setVariable("RESULT_OUTPUT", sprintf($resulttext, $points));
 			$template->parseCurrentBlock();
 		}			
+		
+		//GeoJSON
+		// letzte gespeicherte Eingabe anzeigen
+		$geojsonToDoc = "";
+		if ($user_solution[0]["value1"])
+		{
+			// use previously created geojson from students value-table
+			$geojsonToDoc = $user_solution[0]["value1"];
+		} else {
+			$geojsonToDoc = '{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },"features": []}';
+		}
+
+		$template->setVariable("GEOJSON_TEXT", $geojsonToDoc);
+		$template->setVariable("GEOJSON", $geojsonToDoc);		
+		$template->setVariable("IMAGE_PATH", $this->object->getImagePathWeb().$this->object->getImageFilename());
 		
 		// generate the question output
 		$solutiontemplate = new ilTemplate("tpl.il_as_tst_solution_output.html",TRUE, TRUE, "Modules/TestQuestionPool");

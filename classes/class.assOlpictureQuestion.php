@@ -683,7 +683,7 @@ class assOlpictureQuestion extends assQuestion
 				 * - add to separate coordinatechecklist: testForCoordinatesArray
 				 */
 					$points += floatval($solutionarray[$rowSolution][1]);
-					//error_log("A user got ".$solutionarray[$rowSolution][1]." points for labeling ".$solutionarray[$rowSolution][0]." as ".$inputLabel, 0);
+					error_log("A user got ".$solutionarray[$rowSolution][1]." points for labeling ".$solutionarray[$rowSolution][0]." as ".$inputLabel, 0);
 					$gradingarray[$rowInput]['GrantedPointsforLabel'] = $solutionarray[$rowSolution][1];
 					
 					// Check coordinates if label matched
@@ -697,7 +697,7 @@ class assOlpictureQuestion extends assQuestion
 						//error_log("A user got ".$solutionarray[$rowSolution][2]." points for placing ".$inputLabel, 0);
 					} 
 					else {
-						//error_log("A user placed ".$inputLabel." wrong.", 0);
+						error_log("A user placed ".$inputLabel." wrong.", 0);
 					}
 
 					unset($solutionarray[$rowSolution]);
