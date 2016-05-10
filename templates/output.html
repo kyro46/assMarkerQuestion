@@ -200,11 +200,12 @@
             template = 'Coordinate is ({x} | {y})',
             iconStyle = new ol.style.Style({
               image: new ol.style.Icon({
-                scale: .6,
-                src: markerImage
+                scale: 0.6,
+                src: markerImage,
+                anchor: [0.5, 1],
               }),
               text: new ol.style.Text({
-                offsetY: 25,
+                offsetY: 15,
                 text: ol.coordinate.format(coord4326, template, 2),
                 font: '15px Open Sans,sans-serif',
                 fill: new ol.style.Fill({ color: '#111' }),
