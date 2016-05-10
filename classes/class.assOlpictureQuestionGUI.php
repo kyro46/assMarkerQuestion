@@ -72,7 +72,8 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 		$levenshtein->setRequired(true);
 		$levenshtein->setValue($this->object->getLevenshtein());
 		$form->addItem($levenshtein);
-		
+		/*
+		 * no such things anymore!
 		// gradeorder
 		$gradeorder = new ilCheckboxInputGUI($plugin->txt("gradeorder"), 'gradeorder');
 		if ($this->object->getGradeorder())
@@ -84,7 +85,7 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 		if ($this->object->getPreventchanges())
 			$preventchanges->setChecked(true);
 		$form->addItem($preventchanges);
-
+		*/
 		
 		$item = new ilCustomInputGUI($this->plugin->txt('openlayers_area'));
 		$item->setInfo($this->plugin->txt('how_to_use'));

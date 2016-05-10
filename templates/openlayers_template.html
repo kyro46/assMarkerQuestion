@@ -1,8 +1,9 @@
  <p>{QUESTIONTEXT}</p>
     <div id="map"></div>
-    <textarea   id="geojson" name="geojson">{GEOJSON_TEXT}</textarea >      
-    
-    
+ <form method="POST" action="" id="answerForm">
+	<input type="hidden" id="geojson" name="geojson" value='{GEOJSON_TEXT}' />
+</form>   
+<div id="out"></div>
     <script>
     (function(win, doc){
     	'use strict';
@@ -127,7 +128,25 @@
 
         }        
         
+        function showInputForUser() {
+            var arr = JSON.parse(document.getElementById('geojson').value);
+            var i;
+            var out = "<table><tr><td>Name</td><td>Punkte f&uuml;r Label</td><td>Punkte für Position</td></tr>";
+
+            for(i = 0; i < arr.features.length; i++) {
+                out += "<tr><td>" + 
+                arr.features[i].properties.name +
+                "</td><td style='text-align: right;'>" +
+                arr.features[i].properties.points_answer +
+                "</td><td style='text-align: right;'>" +
+                arr.features[i].properties.points_position +
+                "</td></tr>";
+            }
+            out += "</table>";
+            document.getElementById("out").innerHTML = out;
+        }
         
+        showInputForUser();
         
         
       var contextmenu_items = [
@@ -150,7 +169,9 @@
     	var  format = new ol.format.GeoJSON();
     	var data;
     	data = format.writeFeatures(featureOverlay.getSource().getFeatures());
-    	document.getElementById('geojson').innerHTML = data;
+    	document.getElementById('geojson').value = data;
+        showInputForUser();
+
         
       };
       var editMarker = function(obj){
@@ -166,7 +187,8 @@
     		var  format = new ol.format.GeoJSON();
     		var data;
     		data = format.writeFeatures(featureOverlay.getSource().getFeatures());
-    		document.getElementById('geojson').innerHTML = data;
+    		document.getElementById('geojson').value = data;
+            showInputForUser();
 
     		featureOverlay.getSource().changed();
     	};
@@ -270,8 +292,10 @@
     		var  format = new ol.format.GeoJSON();
     		var data;
     		data = format.writeFeatures(featureOverlay.getSource().getFeatures());
-    		document.getElementById('geojson').innerHTML = data;
+    		document.getElementById('geojson').value = data;
     		map.removeInteraction(draw);
+            showInputForUser();
+
       }); 
      
       modify.on('modifyend',function(e){
@@ -282,7 +306,7 @@
     		var  format = new ol.format.GeoJSON();
     		var data;
     		data = format.writeFeatures(featureOverlay.getSource().getFeatures());
-    		document.getElementById('geojson').innerHTML = data;
+    		document.getElementById('geojson').value = data;
     	}); 
       
     })(window, document);
