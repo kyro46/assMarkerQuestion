@@ -1,496 +1,354 @@
  <p>{QUESTIONTEXT}</p>
-    <style>
-      #map {
-        height: 500px;
-        width: 900px;
-      }
-      #info {
-        position: absolute;
-        height: 1px;
-        width: 1px;
-        z-index: 100;
-      }
-      .tooltip.in {
-        opacity: 1;
-        filter: alpha(opacity=100);
-      }
-      .tooltip.top .tooltip-arrow {
-        border-top-color: white;
-      }
-      .tooltip-inner {
-        border: 2px solid white;
-      }
-    </style>
-    <div id="map" class="map"><div id="info"></div></div>
-    <div>
-      <label>Interaction type:  &nbsp;</label>
-      <label>draw</label>
-      <input type="radio" id="interaction_type_draw" name="interaction_type" value="draw" checked>
-      <label>modify</label>
-      <input type="radio" id="interaction_type_modify" name="interaction_type" value="modify">
-    </div>
-    <div style="display:none">
-      <label>Geometry type</label>
-      <select id="geom_type">
-        <option value="Point" selected>Point</option>
-        <option value="LineString">LineString</option>
-        <option value="Polygon">Polygon</option>
-      </select>
-    </div>
-    <div id="delete" style="text-decoration:underline;cursor:pointer">
-      Delete all features
-    </div>
-	<div id="list">
-	</div>
-	<label>Data:</label>
-    <textarea id="geojson" name="geojson" rows="4" style="width:100%"">{GEOJSON_TEXT}</textarea>
+    <div id="map"></div>
+    <textarea   id="geojson" name="geojson">{GEOJSON_TEXT}</textarea >      
     
-	<script>
-	// create a vector layer used for editing
+    
+    <script>
+    (function(win, doc){
+    	'use strict';
+      
+     var markerImage = 'data:image/png;base64,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';
 	
-
-var getText = function(feature) {
-	  var text = feature.get('name');
-	  return text;
-	};
-
-//load existing features to map, display their names
-var createTextStyle = function(feature) {
-  var align = 'center';
-  var baseline = 'middle';
-  var size = '15px';
-  var offsetX = 0;
-  var offsetY = 0;
-  var weight = 'bold';
-  var rotation = 0;
-  //var font = weight + ' ' + size + ' ' + 'veranda';
-  var font = '14px helvetica,sans-serif';
-
-  var fillColor = '#000';
-  var outlineColor = '#fff'
-  var outlineWidth = 2;
-
-  return new ol.style.Text({
-    textAlign: align,
-    textBaseline: baseline,
-    font: font,
-    text: getText(feature),
-    fill: new ol.style.Fill({color: fillColor}),
-    stroke: new ol.style.Stroke({color: outlineColor, width: outlineWidth}),
-    offsetX: offsetX,
-    offsetY: offsetY,
-    rotation: rotation
-  });
-};
-
-// style for existing features
-var createStyleFunction = function() {
-  return function(feature) {
-    var style = new ol.style.Style({
-      stroke: new ol.style.Stroke({
-        color: 'rgba(0,153,255, 1)',
-        width: 3
-      }),
-      fill: new ol.style.Fill({
-        color: 'rgba(255, 255, 255, 0.1)'
-      }),
-      text: createTextStyle(feature)
-    });
-    return [style];
-  };
-};	
-
-var vector_layer = new ol.layer.Vector({
-	  name: 'my_vectorlayer',
-	  source: new ol.source.GeoJSON(
-			    /** @type {olx.source.GeoJSONOptions} */ ({
-			        object: {GEOJSON}
-			    })
-			   ),
-	 style: createStyleFunction()
-	});
-
-// Old vector_layer definition without GeoJSON
-/*
-var vector_layer = new ol.layer.Vector({
-	  name: 'my_vectorlayer',
-	  source: new ol.source.Vector(),
-	  style: normalStyle
-	});
-	*/
-	
-//Das Hintergrundbild
-var layer = new ol.layer.Image({
-		title: "image",
-		opacity: 1,
-		source: new ol.source.ImageStatic({
-		  url: '{IMAGE_PATH}',
-		  //url: 'uhd.jpg',
-		  //ToDo Adjust dimensions according to uploaded image: +/-x:2 and +/-y:2 minx,miny,maxx,maxy
-		  imageExtent: [-390, -303, 390, 303],
-		  //imageExtent: [-200, -100, 200, 100],
-		  //imageExtent: [-1920, -1080, 1920, 1080],
-		  //Size in Pixels:
-		  imageSize: [780, 606]
-		  //imageSize: [1280, 1024]
-		  //imageSize: [19000, 6385]
-		})
-	  });
-
-// Create a map
-var map = new ol.Map({
-	controls: ol.control.defaults({}).extend([new ol.control.FullScreen()]),
-	logo: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" ,
-	target: 'map',
-  layers: [
-	layer,
-    vector_layer
-  ],
-	view: new ol.View({
-		center: [0, 0],
-		projection: 'EPSG:4326',
-		zoom: 0
-	})
-});
-
-//Call function to initialize jquery-form
-saveData();	
+    	
+      //Drag interaction
+      
+      /**
+       * Define a namespace for the application.
+       */
+      var app = {};
 
 
-// make interactions global so they can later be removed
-var select_interaction,
-    draw_interaction,
-    modify_interaction;
+      /**
+       * @constructor
+       * @extends {ol.interaction.Pointer}
+       */
+      app.Drag = function() {
 
-// get the interaction type
-var $interaction_type = $('[name="interaction_type"]');
-// rebuild interaction when changed
-$interaction_type.on('click', function(e) {
-  // add new interaction
-  if (this.value === 'draw') {
-    addDrawInteraction();
-  } else {
-    addModifyInteraction();
-  }
-});
-
-// get geometry type
-var $geom_type = $('#geom_type');
-// rebuild interaction when the geometry type is changed
-$geom_type.on('change', function(e) {
-  map.removeInteraction(draw_interaction);
-  addDrawInteraction();
-});
-
-// get data type to save in
-$data_type = $('#data_type');
-// clear map and rebuild interaction when changed
-$data_type.onchange = function() {
-  clearMap();
-  map.removeInteraction(draw_interaction);
-  addDrawInteraction();
-};
-
-// build up modify interaction
-// needs a select and a modify interaction working together
-function addModifyInteraction() {
-  // remove draw interaction
-  map.removeInteraction(draw_interaction);
-  // create select interaction
-  select_interaction = new ol.interaction.Select({
-    // make sure only the desired layer can be selected
-    layers: function(vector_layer) {
-      return vector_layer.get('name') === 'my_vectorlayer';
-    }
-  });
-  map.addInteraction(select_interaction);
-  
-  // grab the features from the select interaction to use in the modify interaction
-  var selected_features = select_interaction.getFeatures();
-  // when a feature is selected...
-  selected_features.on('add', function(event) {
-    // grab the feature
-    var feature = event.element;
-    // ...listen for changes and save them
-    feature.on('change', saveData);
-    // listen to pressing of delete key, then delete selected features
-    $(document).on('keyup', function(event) {
-      if (event.keyCode == 46) {
-        // remove all selected features from select_interaction and my_vectorlayer
-        selected_features.forEach(function(selected_feature) {
-          var selected_feature_id = selected_feature.getId();
-          // remove from select_interaction
-          selected_features.remove(selected_feature);
-          // features aus vectorlayer entfernen
-          var vectorlayer_features = vector_layer.getSource().getFeatures();
-          vectorlayer_features.forEach(function(source_feature) {
-            var source_feature_id = source_feature.getId();
-            if (source_feature_id === selected_feature_id) {
-              // remove from my_vectorlayer
-              vector_layer.getSource().removeFeature(source_feature);
-              // save the changed data
-              saveData();
-            }
-          });
+        ol.interaction.Pointer.call(this, {
+          handleDownEvent: app.Drag.prototype.handleDownEvent,
+          handleDragEvent: app.Drag.prototype.handleDragEvent,
+          handleMoveEvent: app.Drag.prototype.handleMoveEvent,
+          handleUpEvent: app.Drag.prototype.handleUpEvent
         });
-        // remove listener
-        $(document).off('keyup');
-      }
-    });
-  });
-  // create the modify interaction
-  modify_interaction = new ol.interaction.Modify({
-    features: selected_features,
-    // delete vertices by pressing the SHIFT key
-    deleteCondition: function(event) {
-      return ol.events.condition.shiftKeyOnly(event) &&
-        ol.events.condition.singleClick(event);
+
+        /**
+         * @type {ol.Pixel}
+         * @private
+         */
+        this.coordinate_ = null;
+
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        this.cursor_ = 'pointer';
+
+        /**
+         * @type {ol.Feature}
+         * @private
+         */
+        this.feature_ = null;
+
+        /**
+         * @type {string|undefined}
+         * @private
+         */
+        this.previousCursor_ = undefined;
+
+      };
+      ol.inherits(app.Drag, ol.interaction.Pointer);
+
+
+      /**
+       * @param {ol.MapBrowserEvent} evt Map browser event.
+       * @return {boolean} `true` to start the drag sequence.
+       */
+      app.Drag.prototype.handleDownEvent = function(evt) {
+        var map = evt.map;
+
+        var feature = map.forEachFeatureAtPixel(evt.pixel,
+            function(feature) {
+              return feature;
+            });
+
+        if (feature) {
+          this.coordinate_ = evt.coordinate;
+          this.feature_ = feature;
+        }
+
+        return !!feature;
+      };
+
+
+      /**
+       * @param {ol.MapBrowserEvent} evt Map browser event.
+       */
+      app.Drag.prototype.handleDragEvent = function(evt) {
+        var deltaX = evt.coordinate[0] - this.coordinate_[0];
+        var deltaY = evt.coordinate[1] - this.coordinate_[1];
+
+        var geometry = /** @type {ol.geom.SimpleGeometry} */
+            (this.feature_.getGeometry());
+        geometry.translate(deltaX, deltaY);
+
+        this.coordinate_[0] = evt.coordinate[0];
+        this.coordinate_[1] = evt.coordinate[1];
+
+    	var  format = new ol.format.GeoJSON();
+    	var data;
+    	data = format.writeFeatures(vectorLayer.getSource().getFeatures());
+    	//$('#data').val(JSON.stringify(data, null, 4));
+    	document.getElementById('geojson').innerHTML = data;
+        
+      };
+
+
+      /**
+       * @param {ol.MapBrowserEvent} evt Event.
+       */
+      app.Drag.prototype.handleMoveEvent = function(evt) {
+        if (this.cursor_) {
+          var map = evt.map;
+          var feature = map.forEachFeatureAtPixel(evt.pixel,
+              function(feature) {
+                return feature;
+              });
+          var element = evt.map.getTargetElement();
+          if (feature) {
+            if (element.style.cursor != this.cursor_) {
+              this.previousCursor_ = element.style.cursor;
+              element.style.cursor = this.cursor_;
+            }
+          } else if (this.previousCursor_ !== undefined) {
+            element.style.cursor = this.previousCursor_;
+            this.previousCursor_ = undefined;
+          }
+        }
+      };
+
+
+      /**
+       * @return {boolean} `false` to stop the drag sequence.
+       */
+      app.Drag.prototype.handleUpEvent = function() {
+        this.coordinate_ = null;
+        this.feature_ = null;
+        return false;
+      };
+
+      //End drag interaction
+
+      var existingGeoJSON = {GEOJSON};
+
+      var 
+        view = new ol.View({
+          center: [0, 0],
+          zoom: 0,
+  		  projection: 'EPSG:4326',
+          minZoom: 0,
+          maxZoom: 4
+        }),
+        vectorLayer = new ol.layer.Vector({
+          source: new ol.source.Vector({
+        	  wrapX: false,
+        	  format: new ol.format.GeoJSON()//.readFeatures(existingGeoJSON)
+        	})
+        }),
+        /*baseLayer = new ol.layer.Tile({
+          preload: Infinity,
+          opacity: 1,
+          source: new ol.source.MapQuest({layer: 'osm'})
+        }),*/
+        imageLayer = new ol.layer.Image({
+    		title: "image",
+    		opacity: 1,
+    		source: new ol.source.ImageStatic({
+    		  url: '{IMAGE_PATH}',
+      		  projection: 'EPSG:4326',
+    		  //url: 'uhd.jpg',
+    		  //ToDo Adjust dimensions according to uploaded image: +/-x:2 and +/-y:2 minx,miny,maxx,maxy
+    		  imageExtent: [-390, -303, 390, 303],
+    		  //Size in Pixels:
+    		  imageSize: [780, 606]
+    		})
+    	  }),
+        map = new ol.Map({
+          interactions: ol.interaction.defaults().extend([new app.Drag()]),
+          logo: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" ,
+          target: doc.getElementById('map'),
+          //loadTilesWhileAnimating: true,
+          view: view,
+          layers: [imageLayer, vectorLayer]
+        }),
+        // from https://github.com/DmitryBaranovskiy/raphael
+        
+        elastic = function(t) {
+          return Math.pow(2, -10 * t) * Math.sin((t - 0.075) * (2 * Math.PI) / 0.3) + 1;
+        },
+        center = function(obj){
+          var pan = ol.animation.pan({
+            duration: 1000,
+            easing: elastic,
+            source: view.getCenter()
+          });
+          map.beforeRender(pan);
+          view.setCenter(obj.coordinate);
+        },
+        marker = function(obj){
+          var
+            coord4326 = obj.coordinate,
+            template = 'Coordinate is ({x} | {y})',
+            iconStyle = new ol.style.Style({
+              image: new ol.style.Icon({
+                scale: .6,
+                src: markerImage
+              }),
+              text: new ol.style.Text({
+                offsetY: 25,
+                text: ol.coordinate.format(coord4326, template, 2),
+                font: '15px Open Sans,sans-serif',
+                fill: new ol.style.Fill({ color: '#111' }),
+                stroke: new ol.style.Stroke({
+                  color: '#eee', width: 2
+                })
+              })
+            }),
+            feature = new ol.Feature({
+              type: 'removable',
+              geometry: new ol.geom.Point(obj.coordinate)
+            })
+          ;
+          
+          feature.setStyle(iconStyle);
+          
+    	  var name = prompt("Please enter the name", "My Point");
+
+    	  if (name == null) {
+    		  name = "";
+    	  }
+
+    	  
+    	  //Save Name to Label and to JSON, refresh Layer
+    	  feature.getStyle().getText().setText(name);
+    	  feature.set('name', name);
+
+          vectorLayer.getSource().addFeature(feature);
+
+    		var  format = new ol.format.GeoJSON();
+    		var data;
+    		data = format.writeFeatures(vectorLayer.getSource().getFeatures());
+    		document.getElementById('geojson').innerHTML = data;
+        }
+      ;
+      
+    var existingFeatures = new ol.format.GeoJSON().readFeatures(existingGeoJSON);
+    vectorLayer.getSource().addFeatures(existingFeatures);
+    var listOfExistingFeatures = vectorLayer.getSource().getFeatures();
+    for (var partFeature of listOfExistingFeatures) {
+    	
+        var markerStyle = new ol.style.Style({
+            image: new ol.style.Icon({
+              scale: .6,
+              src: markerImage
+            }),
+            text: new ol.style.Text({
+              offsetY: 25,
+              text: partFeature.get('name'),
+              font: '15px Open Sans,sans-serif',
+              fill: new ol.style.Fill({ color: '#111' }),
+              stroke: new ol.style.Stroke({
+                color: '#eee', width: 2
+              })
+            })
+          })
+    	
+    	partFeature.setStyle(markerStyle);
+
     }
-  });
-  // add it to the map
-  map.addInteraction(modify_interaction);
-}
+      
+      
+      var contextmenu_items = [
+         {
+          text: 'Add a Marker',
+          icon: markerImage,
+          callback: marker
+        }
+      ];
+      var contextmenu = new ContextMenu({
+        width: 180,
+        default_items: false,
+        items: contextmenu_items
+      });
+      map.addControl(contextmenu);
+      
+      var removeMarker = function(obj){
+        vectorLayer.getSource().removeFeature(obj.data.marker);
+        
+    	var  format = new ol.format.GeoJSON();
+    	var data;
+    	data = format.writeFeatures(vectorLayer.getSource().getFeatures());
+    	document.getElementById('geojson').innerHTML = data;
+        
+      };
+      var editMarker = function(obj){
+    	  var name = prompt("Please enter the name", "My Point");
 
-//test ####################################
-function createStyleWithText(name) {
-	
-var text = new ol.style.Text({
-	font: '14px helvetica,sans-serif',
-	text: name,
-	rotation: 0,
-	fill: new ol.style.Fill({
-		color: '#000'
-	}),
-	stroke: new ol.style.Stroke({
-		color: '#fff',
-		width: 2
-	})
-});
-	
-var style = new ol.style.Style({
-	fill: new ol.style.Fill({
-	color: 'rgba(255, 255, 255, 0.2)'
-	}),
-	stroke: new ol.style.Stroke({
-		color: '#ffcc33',
-		width: 2
-	}),
-	image: new ol.style.Circle({
-		radius: 7,
-		fill: new ol.style.Fill({
-		color: '#ffcc33'
-		})
-	}),
-	text : text
-});
+    	  //document.getElementById('coor').innerHTML = obj.data.marker.getStyle().getText().getText();
 
-return style;
-}
-//end test ####################################
+    	  //Save Name to Label and to JSON, refresh Layer
+    	  obj.data.marker.getStyle().getText().setText(name);
+    	  obj.data.marker.set('name', name);
+    	  
+    		var  format = new ol.format.GeoJSON();
+    		var data;
+    		data = format.writeFeatures(vectorLayer.getSource().getFeatures());
+    		document.getElementById('geojson').innerHTML = data;
 
-// creates a draw interaction
-function addDrawInteraction() {
-  // remove other interactions
-  map.removeInteraction(select_interaction);
-  map.removeInteraction(modify_interaction);
-  
-  // create the interaction
-  draw_interaction = new ol.interaction.Draw({
-    source: vector_layer.getSource(),
-    type: /** @type {ol.geom.GeometryType} */ ($geom_type.val())
-  });
-	// add it to the map
-  map.addInteraction(draw_interaction);
-  
-  // when a new feature has been drawn...
-  draw_interaction.on('drawend', function(event) {
-    // create a unique id
-    // it is later needed to delete features
-    var id = uid();
-    // give the feature this id
-    event.feature.setId(id);
-	
-//test ####################################
-	event.feature.set('id', new Date().getTime().toString());
-	var name = prompt("Please enter the name", "My Point");
-	if(name != "" && name !== null) {
-	event.feature.set('name', name);
-	} else {
-	event.feature.set('name', 'polygon');
-	}
-	event.feature.setStyle(createStyleWithText(event.feature.get('name')));
-
-//end test ####################################
-    // save the changed data
-    saveData(); 
-  });
-}
-
-// add the draw interaction when the page is first shown
-addDrawInteraction();
-
-// shows data in textarea
-// replace this function by what you need
-function saveData() {
-	var  format = new ol.format.GeoJSON();
-	var data;
-	data = format.writeFeatures(vector_layer.getSource().getFeatures());
-	//$('#data').val(JSON.stringify(data, null, 4));
-	$('#geojson').val(data);
-	var json = $.parseJSON(data);
-	$('#single').val(json.type);
-
-	//create form
-	var features = vector_layer.getSource().getFeatures();
-
-	//create form for each polygon
-	var vectorlayer_features = vector_layer.getSource().getFeatures();
-	
-	//prepare
-	//var decodedString = ;
-	var obj = JSON.parse(window.atob('{FEATURES}'));
-
-	
-	$('#list').html('</br><div class="appm">Created Points:</div>');
-	$('#list').append('<form method="POST">');
-
-		vectorlayer_features.forEach(function(source_feature) {
-		
-		var geom = source_feature.getGeometry().getCoordinates();
-		var name = source_feature.get('name');
-		var opttext = source_feature.get('opttext');
-		
-		var points_answer = source_feature.get('points_answer');
-		var points_position = source_feature.get('points_position');
-		
-		var id = source_feature.get('id');
-
-		//Coordinates - not needed
-		//$('#list form').append('<input type="text" size="50" value="' + geom + '" name="geometry" readonly="readonly" disabled="disabled" id="geometry_' + id + '"/>');
-		//Timestamp-ID - not needed
-		//$('#list form').append('<input type="text" value="' + id + '" id="id" name="id" readonly="readonly" disabled="disabled"/>');
-		
-		//Name
-		$('#list form').append('<tr><td align="left">Label </td><td><input type="text" value="' + name + '" id="name_' + id + '" name="name" /></td></tr>');
-		//Delete Button
-		$('#list form').append('<input type="button" class="btn btn-default" id="applybutton_' + id + '" value="Delete" onclick="deletebacktovector(' + id + ')"/>');
-		//Save Button
-		$('#list form').append('<input type="button" class="btn btn-default" id="savebutton_' + id + '" value="Change" onclick="savebacktovector(' + id + ')" /></br></br>');
-		
-		for (var key in obj) {
-			//var distance = levenshteinDistance(key, name);
-			var distance = getEditDistance(key,name);
-			//TODO change distance to option in edit-form (see other in Question.php)
-			if (distance <= {LEVENSHTEIN}) {
-	        //if (key == name) {
-	    	$('#list form').append('<b> Hint:' + obj[key] + '</b></br></br>');
-	    	}
-		}
-	});
-}
-
-// levenshtein 1 - do not use, to slow
-/*
-function levenshteinDistance (s, t) {
-    if (s.length === 0) return t.length;
-    if (t.length === 0) return s.length;
-
-    return Math.min(
-            levenshteinDistance(s.substr(1), t) + 1,
-            levenshteinDistance(t.substr(1), s) + 1,
-            levenshteinDistance(s.substr(1), t.substr(1)) + (s[0] !== t[0] ? 1 : 0)
-    );
-}
-*/
-
-//Levenshtein 2, much faster!
-//Source: http://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance
-//Compute the edit distance between the two given strings
-function getEditDistance(a, b) {
-  if(a.length === 0) return b.length; 
-  if(b.length === 0) return a.length; 
- 
-  var matrix = [];
- 
-  // increment along the first column of each row
-  var i;
-  for(i = 0; i <= b.length; i++){
-    matrix[i] = [i];
-  }
- 
-  // increment each column in the first row
-  var j;
-  for(j = 0; j <= a.length; j++){
-    matrix[0][j] = j;
-  }
- 
-  // Fill in the rest of the matrix
-  for(i = 1; i <= b.length; i++){
-    for(j = 1; j <= a.length; j++){
-      if(b.charAt(i-1) == a.charAt(j-1)){
-        matrix[i][j] = matrix[i-1][j-1];
-      } else {
-        matrix[i][j] = Math.min(matrix[i-1][j-1] + 1, // substitution
-                                Math.min(matrix[i][j-1] + 1, // insertion
-                                         matrix[i-1][j] + 1)); // deletion
-      }
-    }
-  }
- 
-  return matrix[b.length][a.length];
-};
-
-//delete feature via buttonclick in form
-function deletebacktovector(apply_id) {
-	  	var vectorlayer_features = vector_layer.getSource().getFeatures();
-	  	vectorlayer_features.forEach(function(source_feature) {
-		//alert(source_feature.get('id'));
-		
-			if (source_feature.get('id') == apply_id) {
-				vector_layer.getSource().removeFeature(source_feature);
-				saveData();	
-			}
-		});
-};
-
-//apply the changes made in the form
-function savebacktovector(apply_id) {
-	  	var vectorlayer_features = vector_layer.getSource().getFeatures();
-	  	vectorlayer_features.forEach(function(source_feature) {
-		
-			if (source_feature.get('id') == apply_id) {
-				//TODO Button um dieses eine feature zu modifizieren
-				source_feature.set('name', $( "#name_" + apply_id ).val());
-
-				source_feature.setStyle(createStyleWithText($( "#name_" + apply_id ).val()));
-
-				saveData();	
-			}
-		});
-};
-
-// clear map when user clicks on 'Delete all features'
-$("#delete").click(function() {
-  clearMap();
-});
-
-// clears the map and the output of the data
-function clearMap() {
-  vector_layer.getSource().clear();
-  if (select_interaction) {
-  	select_interaction.getFeatures().clear();
-  }
-  $('#geojson').val('{"type":"FeatureCollection","features":[]}');
-}
-
-// creates unique id's
-function uid(){
-  var id = 0;
-  return function() {
-    if (arguments[0] === 0) {
-      id = 0;
-    }
-    return id++;
-  }
-}
-	</script>
+    	  vectorLayer.getSource().changed();
+    	};
+      var editMarkerItem = {
+    		    text: 'Edit this Marker',
+    		  	icon: markerImage,
+    		  	callback: editMarker
+      };  
+      var removeMarkerItem = {
+         text: 'Remove this Marker',
+         icon: markerImage,
+         callback: removeMarker
+      };  
+      
+      var changed = false;
+      contextmenu.on('open', function(evt){
+        var feature = map.forEachFeatureAtPixel(evt.pixel, function(ft, l){
+          return ft;
+        });
+        if (feature && feature.get('type') == 'removable') {
+          contextmenu.clear();
+          removeMarkerItem.data = {
+            marker: feature
+          };
+          editMarkerItem.data = {
+        	        marker: feature
+        	      };
+          contextmenu.push(editMarkerItem);
+          contextmenu.push(removeMarkerItem);
+          changed = true;
+        } else if (changed) {
+          contextmenu.clear();
+          contextmenu.extend(contextmenu_items);
+          //contextmenu.extend(contextmenu.getDefaultItems());
+          changed = false;
+        }
+      });
+      map.on('pointermove', function(e) {
+        if (e.dragging) return;
+             
+        var pixel = map.getEventPixel(e.originalEvent);
+        var hit = map.hasFeatureAtPixel(pixel);
+        
+        map.getTarget().style.cursor = hit ? 'pointer' : '';
+      });
+      
+    })(window, document);
+    	
+    </script>

@@ -1,0 +1,12 @@
+#map{
+  height: 600px;
+  width: 100%;
+  background: url(textured_paper.jpeg) repeat;
+}
+
+.ol-control button{ 
+    background-color: rgba(40, 40, 40, 0.8) !important;
+}
+.ol-control button:hover{ 
+    background-color: rgba(40, 40, 40, 1) !important;
+}
