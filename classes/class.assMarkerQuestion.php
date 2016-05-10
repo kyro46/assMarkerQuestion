@@ -216,7 +216,7 @@ class assMarkerQuestion extends assQuestion
 		$this->setEstimatedWorkingTime(substr($data["working_time"], 0, 2), substr($data["working_time"], 3, 2), substr($data["working_time"], 6, 2));			
 
 		// load backgroundImage
-		$resultImage= $ilDB->queryF("SELECT image_file FROM il_qpl_qst_olpic_image WHERE question_fi = %s", array('integer'), array($question_id));
+		$resultImage= $ilDB->queryF("SELECT image_file FROM il_qpl_qst_marker_img WHERE question_fi = %s", array('integer'), array($question_id));
 		if($ilDB->numRows($resultImage) == 1)
 		{
 			$data = $ilDB->fetchAssoc($resultImage);
@@ -225,7 +225,7 @@ class assMarkerQuestion extends assQuestion
 		
 		//###################################
 		//Angepasste SQL-Abfrage
-		$resultCheck= $ilDB->queryF("SELECT geojson, opttext, levenshtein, gradeorder, preventchanges FROM il_qpl_qst_olpic_check WHERE question_fi = %s", array('integer'), array($question_id));
+		$resultCheck= $ilDB->queryF("SELECT geojson, opttext, levenshtein, gradeorder, preventchanges FROM il_qpl_qst_marker_data WHERE question_fi = %s", array('integer'), array($question_id));
 		//END ###################################
 		if($ilDB->numRows($resultCheck) == 1)
 		{
@@ -261,14 +261,14 @@ class assMarkerQuestion extends assQuestion
 		global $ilDB, $ilLog;
 		$this->saveQuestionDataToDb($original_id);			
 		// save background image
-		$affectedRows = $ilDB->manipulateF("DELETE FROM il_qpl_qst_olpic_image WHERE question_fi = %s", 
+		$affectedRows = $ilDB->manipulateF("DELETE FROM il_qpl_qst_marker_img WHERE question_fi = %s", 
 			array("integer"),
 			array($this->getId())
 		);
 		// save image		
 		if (!empty($this->image_filename))
 		{
-			$affectedRows = $ilDB->manipulateF("INSERT INTO il_qpl_qst_olpic_image (question_fi, image_file) VALUES (%s, %s)", 
+			$affectedRows = $ilDB->manipulateF("INSERT INTO il_qpl_qst_marker_img (question_fi, image_file) VALUES (%s, %s)", 
 				array("integer", "text"),
 				array(
 					$this->getId(),
@@ -277,11 +277,11 @@ class assMarkerQuestion extends assQuestion
 			);
 		}
 		// save line and color option
-		$affectedRows = $ilDB->manipulateF("DELETE FROM il_qpl_qst_olpic_check WHERE question_fi = %s", 
+		$affectedRows = $ilDB->manipulateF("DELETE FROM il_qpl_qst_marker_data WHERE question_fi = %s", 
 			array("integer"),
 			array($this->getId())
 		);
-		$affectedRows = $ilDB->manipulateF("INSERT INTO il_qpl_qst_olpic_check (question_fi, geojson, opttext, levenshtein, gradeorder, preventchanges) VALUES (%s, %s, %s, %s, %s, %s)", 
+		$affectedRows = $ilDB->manipulateF("INSERT INTO il_qpl_qst_marker_data (question_fi, geojson, opttext, levenshtein, gradeorder, preventchanges) VALUES (%s, %s, %s, %s, %s, %s)", 
 				array("integer", "text", "text", "integer", "integer", "integer"),
 				array(
 					$this->getId(),
