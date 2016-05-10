@@ -13,19 +13,13 @@ include_once "./Modules/Test/classes/inc.AssessmentConstants.php";
 class assMarkerQuestion extends assQuestion
 {
 	private $plugin = null;	
-	// backgroundimage	
+
 	var $image_filename = "";
-
-	//###################################################################
-	// geojson
 	var $geojson = "";
-	// opttext
 	var $opttext = "";
-
 	var $levenshtein = 3;
 	var $gradeorder = 0;
 	var $preventchanges = 0;
-	// END ###################################################################
 	
 	/**
 	* assMarkerQuestion constructor
@@ -75,7 +69,7 @@ class assMarkerQuestion extends assQuestion
 	{
 		// Please add here your own check for question completeness
 		// The parent function will always return false
-		if(($this->title) and ($this->author) and ($this->question) and ($this->getMaximumPoints() >= 0))
+		if(($this->title) and ($this->author) and ($this->question) and ($this->getMaximumPoints() > 0))
 		{
 			return true;
 		}
@@ -98,7 +92,7 @@ class assMarkerQuestion extends assQuestion
 		$this->image_filename = "";
 	}
 
-	// new Getter/Setter #############################################
+	// Getter/Setter
 	
 	function setGeoJSON($value)
 	{
@@ -149,7 +143,7 @@ class assMarkerQuestion extends assQuestion
 	{
 		return $this->preventchanges;
 	}
-	//END #######################################################
+	//END Getter/Setter
 	
 	
 	/**
@@ -173,8 +167,8 @@ class assMarkerQuestion extends assQuestion
 			{
 				ilUtil::makeDirParents($imagepath);
 			}
-			//** TODO  hier kommt noch eine Fehlermeldung, obwohl das Bild am Ende im richtigen Ornder liegt
 			
+			// TODO ? hier kommt noch eine Fehlermeldung, obwohl das Bild am Ende im richtigen Ornder liegt
 			/*if (!ilUtil::moveUploadedFile($image_tempfilename, $image_filename, $imagepath.'/'.$image_filename))
 			{
 				$this->ilias->raiseError("The image could not be uploaded!", $this->ilias->error_obj->MESSAGE);
@@ -223,20 +217,16 @@ class assMarkerQuestion extends assQuestion
 			$this->image_filename = $data["image_file"];
 		}		
 		
-		//###################################
-		//Angepasste SQL-Abfrage
 		$resultCheck= $ilDB->queryF("SELECT geojson, opttext, levenshtein, gradeorder, preventchanges FROM il_qpl_qst_marker_data WHERE question_fi = %s", array('integer'), array($question_id));
-		//END ###################################
 		if($ilDB->numRows($resultCheck) == 1)
 		{
 			$data = $ilDB->fetchAssoc($resultCheck);
-			//#########################################################
+
 			$this->setGeoJSON($data["geojson"]);
 			$this->setOptText($data["opttext"]);
 			$this->setLevenshtein($data["levenshtein"]);
 			$this->setGradeorder($data["gradeorder"]);
 			$this->setPreventchanges($data["preventchanges"]);
-			//END #####################################################
 		}
 				
 		try
@@ -260,12 +250,12 @@ class assMarkerQuestion extends assQuestion
 	{
 		global $ilDB, $ilLog;
 		$this->saveQuestionDataToDb($original_id);			
-		// save background image
+		// delete old image
 		$affectedRows = $ilDB->manipulateF("DELETE FROM il_qpl_qst_marker_img WHERE question_fi = %s", 
 			array("integer"),
 			array($this->getId())
 		);
-		// save image		
+		// save new image		
 		if (!empty($this->image_filename))
 		{
 			$affectedRows = $ilDB->manipulateF("INSERT INTO il_qpl_qst_marker_img (question_fi, image_file) VALUES (%s, %s)", 
@@ -276,7 +266,7 @@ class assMarkerQuestion extends assQuestion
 				)
 			);
 		}
-		// save line and color option
+
 		$affectedRows = $ilDB->manipulateF("DELETE FROM il_qpl_qst_marker_data WHERE question_fi = %s", 
 			array("integer"),
 			array($this->getId())
@@ -434,7 +424,7 @@ class assMarkerQuestion extends assQuestion
 		}
 		$filename = $this->getImageFilename();
 		if (!copy($imagepath_original . $filename, $imagepath . $filename)) {
-			print "image could not be duplicated!!!! ";
+			print "image could not be duplicated";
 		}
 	}
 
@@ -450,7 +440,7 @@ class assMarkerQuestion extends assQuestion
 		$filename = $this->getImageFilename();
 		if (!copy($imagepath_original . $filename, $imagepath . $filename)) 
 		{
-			print "image could not be copied!!!! ";
+			print "image could not be copied";
 		}
 	}
 	
@@ -766,15 +756,10 @@ class assMarkerQuestion extends assQuestion
 			)
 		);
 
-		$entered_values = false;		
-		//$value = $_POST['answerImage'];		
-		
-		// new #######################
-		
+		$entered_values = false;
+
 		$geojsonfromdoc = $_POST['geojson'];
-		
-		// end #######################
-		
+
 		$result = $ilDB->queryF("SELECT test_fi FROM tst_active WHERE active_id = %s",
 			array('integer'),
 			array($active_id)
@@ -785,11 +770,8 @@ class assMarkerQuestion extends assQuestion
 			$row = $ilDB->fetchAssoc($result);
 			$test_id = $row["test_fi"];
 		}
-		
-		//START #############
-		//if (strlen($value) > 0)
+	
 		if (strlen($geojsonfromdoc) > 0)
-		// END ##############
 		{
 			$filename = $this->getFileUploadPath($test_id, $active_id).time()."_OlpictureTask.png";
 			$entered_values = true;
@@ -798,30 +780,11 @@ class assMarkerQuestion extends assQuestion
 				"solution_id" => array("integer", $next_id),
 				"active_fi" => array("integer", $active_id),
 				"question_fi" => array("integer", $this->getId()),
-				// START ####################
 				"value1" => array("clob", $geojsonfromdoc),
-				//"value1" => array("clob", 'path'),
-				//"value2" => array("clob", $filename),
-				// END ######################
+				//value2 used for gradingJSON
 				"pass" => array("integer", $pass),
 				"tstamp" => array("integer", time())
 			));
-			
-			/*
-			if (!@file_exists($this->getFileUploadPath($test_id, $active_id))) 
-				ilUtil::makeDirParents($this->getFileUploadPath($test_id, $active_id));
-			
-			// Grab all files from the desired folder
-			$files = glob( $this->getFileUploadPath($test_id, $active_id).'*.png' );
-			if (count($files) == 3)
-			{
-				unlink($files[0]);
-			}						
-			$imageInfo = $value;
-			$image = fopen($imageInfo, 'r');
-			file_put_contents($filename, $image);
-			fclose($image);
-			*/
 		}
 		
 		if ($entered_values)
