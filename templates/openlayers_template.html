@@ -176,10 +176,16 @@
       };
       var editMarker = function(obj){
     	  
-    	  //TODO Re-promt for points and name
-    	  var name = prompt("Please enter the name", "My Point");
+    	  var oldname = obj.data.marker.getStyle().getText().getText();
+    	  var name = prompt("Please enter the name", oldname);
 
-
+    	  //this won't work in safari browser
+    	  //in safari, canceling a prompt will return "" instead of null, as all other browsers do
+    	  if (name == null) {
+    		  name = oldname;
+    	  }
+    	  
+    	  
     	  //Save Name to Label and to JSON, refresh Layer
     	  obj.data.marker.getStyle().getText().setText(name);
     	  obj.data.marker.set('name', name);
