@@ -1,8 +1,8 @@
-# markerQuestion
+# MarkerQuestion
 
 Questiontypeplugin for ILIAS 5.1.x
 
-For the buggy prototype developed for ILIAS 4.4 see the [**Releases**](https://github.com/kyro46/assOlpictureQuestion/releases)
+For the buggy prototype developed for ILIAS 4.4 see the [**Releases**](https://github.com/kyro46/assMarkerQuestion/releases)
 
 Based on OpenLayers 3
 
@@ -33,7 +33,7 @@ Install the plugin
 ```bash
 mkdir -p Customizing/global/plugins/Modules/TestQuestionPool/Questions  
 cd Customizing/global/plugins/Modules/TestQuestionPool/Questions
-git clone https://github.com/kyro46/assOlpictureQuestion.git
+git clone https://github.com/kyro46/assMarkerQuestion.git
 ```
 and activate it in the ILIAS-Admin-GUI.  
 

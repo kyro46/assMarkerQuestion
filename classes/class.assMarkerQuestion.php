@@ -4,13 +4,13 @@ include_once "./Modules/TestQuestionPool/classes/class.assQuestion.php";
 include_once "./Modules/Test/classes/inc.AssessmentConstants.php";
 
 /**
- * Class for assOlpictureQuestion Question
+ * Class for assMarkerQuestion Question
  *
  * @author Christoph Jobst <christoph.jobst@llz.uni-halle.de>
  * @version	$Id:  $
  * @ingroup ModulesTestQuestionPool
  */
-class assOlpictureQuestion extends assQuestion
+class assMarkerQuestion extends assQuestion
 {
 	private $plugin = null;	
 	// backgroundimage	
@@ -28,9 +28,9 @@ class assOlpictureQuestion extends assQuestion
 	// END ###################################################################
 	
 	/**
-	* assOlpictureQuestion constructor
+	* assMarkerQuestion constructor
 	*
-	* The constructor takes possible arguments an creates an instance of the assOlpictureQuestion object.
+	* The constructor takes possible arguments an creates an instance of the assMarkerQuestion object.
 	*
 	* @param string $title A title string to describe the question
 	* @param string $comment A comment string to describe the question
@@ -61,7 +61,7 @@ class assOlpictureQuestion extends assQuestion
 		if ($this->plugin == null)
 		{
 			include_once "./Services/Component/classes/class.ilPlugin.php";
-			$this->plugin = ilPlugin::getPluginObject(IL_COMP_MODULE, "TestQuestionPool", "qst", "assOlpictureQuestion");			
+			$this->plugin = ilPlugin::getPluginObject(IL_COMP_MODULE, "TestQuestionPool", "qst", "assMarkerQuestion");			
 		}
 		return $this->plugin;
 	}
@@ -252,7 +252,7 @@ class assOlpictureQuestion extends assQuestion
 	}	
 
 	/**
-	* Saves a assOlpictureQuestion object to a database
+	* Saves a assMarkerQuestion object to a database
 	*
 	* @access public
 	*/
@@ -320,7 +320,7 @@ class assOlpictureQuestion extends assQuestion
 	}
 
 /**
-* Duplicates an assOlpictureQuestion
+* Duplicates an assMarkerQuestion
 *
 * @access public
 */
@@ -383,7 +383,7 @@ class assOlpictureQuestion extends assQuestion
 	}
 
 	/**
-	* Copies an assOlpictureQuestion object
+	* Copies an assMarkerQuestion object
 	*
 	* @access public
 	*/
@@ -865,7 +865,7 @@ class assOlpictureQuestion extends assQuestion
 	*/
 	function getQuestionType()
 	{
-		return "assOlpictureQuestion";
+		return "assMarkerQuestion";
 	}
 	
 	/**
@@ -964,8 +964,8 @@ class assOlpictureQuestion extends assQuestion
 	*/
 	function fromXML(&$item, &$questionpool_id, &$tst_id, &$tst_object, &$question_counter, &$import_mapping)
 	{
-		$this->getPlugin()->includeClass("import/qti12/class.assOlpictureQuestionImport.php");
-		$import = new assOlpictureQuestionImport($this);
+		$this->getPlugin()->includeClass("import/qti12/class.assMarkerQuestionImport.php");
+		$import = new assMarkerQuestionImport($this);
 		$import->fromXML($item, $questionpool_id, $tst_id, $tst_object, $question_counter, $import_mapping);
 	}
 	
@@ -978,8 +978,8 @@ class assOlpictureQuestion extends assQuestion
 	*/
 	function toXML($a_include_header = true, $a_include_binary = true, $a_shuffle = false, $test_output = false, $force_image_references = false)
 	{
-		$this->getPlugin()->includeClass("export/qti12/class.assOlpictureQuestionExport.php");
-		$export = new assOlpictureQuestionExport($this);
+		$this->getPlugin()->includeClass("export/qti12/class.assMarkerQuestionExport.php");
+		$export = new assMarkerQuestionExport($this);
 		return $export->toXML($a_include_header, $a_include_binary, $a_shuffle, $test_output, $force_image_references);
 	}
 }

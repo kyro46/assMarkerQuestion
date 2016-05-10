@@ -3,13 +3,13 @@
 include_once "./Modules/TestQuestionPool/classes/import/qti12/class.assQuestionImport.php";
 
 /**
-* Class for OlpictureQuestion import
+* Class for MarkerQuestion import
 *
 * @author Christoph Jobst <christoph.jobst@llz.uni-halle.de>
 * @version	$Id: $
 * @ingroup 	ModulesTestQuestionPool
 */
-class assOlpictureQuestionImport extends assQuestionImport
+class assMarkerQuestionImport extends assQuestionImport
 {
 	/**
 	* Creates a question from a QTI file

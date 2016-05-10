@@ -2,23 +2,23 @@
 	include_once "./Modules/TestQuestionPool/classes/class.ilQuestionsPlugin.php";
 	
 	/**
-	* assOlpictureQuestion plugin
+	* assMarkerQuestion plugin
 	*
 	* @author Christoph Jobst <christoph.jobst@llz.uni-halle.de>
 	* @version $Id$
 	* * @ingroup ModulesTestQuestionPool
 	*
 	*/
-	class ilassOlpictureQuestionPlugin extends ilQuestionsPlugin
+	class ilassMarkerQuestionPlugin extends ilQuestionsPlugin
 	{
 		final function getPluginName()
 		{
-			return "assOlpictureQuestion";
+			return "assMarkerQuestion";
 		}
 		
 		final function getQuestionType()
 		{
-			return "assOlpictureQuestion";
+			return "assMarkerQuestion";
 		}
 		
 		final function getQuestionTypeTranslation()

@@ -1,21 +1,21 @@
-<?php
+I<?php
 
 include_once "./Modules/TestQuestionPool/classes/class.assQuestionGUI.php";
 include_once "./Modules/Test/classes/inc.AssessmentConstants.php";
 
  /**
- * The assOlpictureQuestionGUI class encapsulates the GUI representation
+ * The assMarkerQuestionGUI class encapsulates the GUI representation
  * for Question-Type-Plugin.
  *
  * @author Christoph Jobst <christoph.jobst@llz.uni-halle.de>
  * @ingroup ModulesTestQuestionPool
  *
- * @ilctrl_iscalledby assOlpictureQuestionGUI: ilObjQuestionPoolGUI, ilObjTestGUI, ilQuestionEditGUI, ilTestExpressPageObjectGUI
+ * @ilctrl_iscalledby assMarkerQuestionGUI: ilObjQuestionPoolGUI, ilObjTestGUI, ilQuestionEditGUI, ilTestExpressPageObjectGUI
  */
-class assOlpictureQuestionGUI extends assQuestionGUI
+class assMarkerQuestionGUI extends assQuestionGUI
 {		
 	/**
-	 * @var assOlpictureQuestionPlugin	The plugin object
+	 * @var assMarkerQuestionPlugin	The plugin object
 	 */
 	var $plugin = null;
 
@@ -29,9 +29,9 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 	{
 		parent::__construct();
 		include_once "./Services/Component/classes/class.ilPlugin.php";
-		$this->plugin = ilPlugin::getPluginObject(IL_COMP_MODULE, "TestQuestionPool", "qst", "assOlpictureQuestion");
-		$this->plugin->includeClass("class.assOlpictureQuestion.php");
-		$this->object = new assOlpictureQuestion();
+		$this->plugin = ilPlugin::getPluginObject(IL_COMP_MODULE, "TestQuestionPool", "qst", "assMarkerQuestion");
+		$this->plugin->includeClass("class.assMarkerQuestion.php");
+		$this->object = new assMarkerQuestion();
 		if ($id >= 0)
 		{
 			$this->object->loadFromDb($id);
@@ -58,7 +58,7 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 		$form->setTitle($this->outQuestionType());
 		$form->setMultipart(FALSE);
 		$form->setTableWidth("100%");
-		$form->setId("assOlpictureQuestion");
+		$form->setId("assMarkerQuestion");
 		// Baseinput: title, author, description, question, working time (assessment mode)		
 		$this->addBasicQuestionFormProperties($form);
 		
@@ -111,7 +111,7 @@ class assOlpictureQuestionGUI extends assQuestionGUI
 		$tpl->addCss($plugin->getDirectory().'/css/contextmenu.css');
 		
 		
-		$template=$this->plugin->getTemplate('openlayers_template.html');
+		$template=$this->plugin->getTemplate('edit.html');
 		
 		$template->setVariable("IMAGE_PATH", $this->object->getImagePathWeb().$this->object->getImageFilename());
 		
