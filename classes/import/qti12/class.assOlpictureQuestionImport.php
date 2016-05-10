@@ -5,7 +5,7 @@ include_once "./Modules/TestQuestionPool/classes/import/qti12/class.assQuestionI
 /**
 * Class for OlpictureQuestion import
 *
-* @author Yves Annanias <yves.annanias@llz.uni-halle.de>
+* @author Christoph Jobst <christoph.jobst@llz.uni-halle.de>
 * @version	$Id: $
 * @ingroup 	ModulesTestQuestionPool
 */
@@ -100,9 +100,13 @@ class assOlpictureQuestionImport extends assQuestionImport
 		$this->object->setObjId($questionpool_id);
 		$this->object->setEstimatedWorkingTime($duration["h"], $duration["m"], $duration["s"]);		
 		$this->object->setPoints($item->getMetadataEntry("points"));
-		$this->object->setLineValue($item->getMetadataEntry("allowDifferentLineSize"));
-		$this->object->setColorValue($item->getMetadataEntry("allowDifferentColors"));
 		
+		$this->object->setGeoJSON($item->getMetadataEntry("geojson"));
+		$this->object->setOptText($item->getMetadataEntry("optText"));
+		$this->object->setLevenshtein($item->getMetadataEntry("levenshtein"));
+		$this->object->setGradeorder($item->getMetadataEntry("gradeorder"));
+		$this->object->setPreventchanges($item->getMetadataEntry("preventchanges"));
+
 		// additional content editing mode information
 		$this->object->setAdditionalContentEditingMode(
 			$this->fetchAdditionalContentEditingModeInformation($item)
@@ -191,9 +195,6 @@ class assOlpictureQuestionImport extends assQuestionImport
 				fclose($fh);
 			}
 		}
-		$this->object->setRadioOption($item->getMetadataEntry("radiooption"));
-		$this->object->setCanvasHeight($item->getMetadataEntry("canvasheight"));
-		$this->object->setCanvasWidth($item->getMetadataEntry("canvaswidth"));
 			
 		// Now save the question again
 		$this->object->saveToDb();

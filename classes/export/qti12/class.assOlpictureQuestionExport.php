@@ -5,7 +5,7 @@ include_once "./Modules/TestQuestionPool/classes/export/qti12/class.assQuestionE
 /**
 * Olpicture question export
 *
-* @author	Fred Neumann <fred.neumann@fau.de>
+* @author Christoph Jobst <christoph.jobst@llz.uni-halle.de>
 * @version	$Id:  $
 * @ingroup ModulesTestQuestionPool
 */
@@ -60,13 +60,29 @@ class assOlpictureQuestionExport extends assQuestionExport
 
 		//Question specific
 		$a_xml_writer->xmlStartTag("qtimetadatafield");
-		$a_xml_writer->xmlElement("fieldlabel", NULL, "allowDifferentLineSize");
-		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getLineValue());
+		$a_xml_writer->xmlElement("fieldlabel", NULL, "geojson");
+		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getGeoJSON());
 		$a_xml_writer->xmlEndTag("qtimetadatafield");
-		//
+
 		$a_xml_writer->xmlStartTag("qtimetadatafield");
-		$a_xml_writer->xmlElement("fieldlabel", NULL, "allowDifferentColors");
-		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getColorValue());
+		$a_xml_writer->xmlElement("fieldlabel", NULL, "optText");
+		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getOptText());
+		$a_xml_writer->xmlEndTag("qtimetadatafield");
+
+		$a_xml_writer->xmlStartTag("qtimetadatafield");
+		$a_xml_writer->xmlElement("fieldlabel", NULL, "levenshtein");
+		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getLevenshtein());
+		$a_xml_writer->xmlEndTag("qtimetadatafield");
+		
+		$a_xml_writer->xmlStartTag("qtimetadatafield");
+		$a_xml_writer->xmlElement("fieldlabel", NULL, "gradeorder");
+		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getGradeorder());
+		$a_xml_writer->xmlEndTag("qtimetadatafield");
+		
+
+		$a_xml_writer->xmlStartTag("qtimetadatafield");
+		$a_xml_writer->xmlElement("fieldlabel", NULL, "preventchanges");
+		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getPreventchanges());
 		$a_xml_writer->xmlEndTag("qtimetadatafield");
 		
 		// backgroundImage
@@ -102,18 +118,6 @@ class assOlpictureQuestionExport extends assQuestionExport
 			$a_xml_writer->xmlElement("fieldentry", NULL, $base64);
 			$a_xml_writer->xmlEndTag("qtimetadatafield");
 		}
-		$a_xml_writer->xmlStartTag("qtimetadatafield");
-		$a_xml_writer->xmlElement("fieldlabel", NULL, "radiooption");
-		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getRadioOption());
-		$a_xml_writer->xmlEndTag("qtimetadatafield");
-		$a_xml_writer->xmlStartTag("qtimetadatafield");
-		$a_xml_writer->xmlElement("fieldlabel", NULL, "canvasheight");
-		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getCanvasHeight());
-		$a_xml_writer->xmlEndTag("qtimetadatafield");
-		$a_xml_writer->xmlStartTag("qtimetadatafield");
-		$a_xml_writer->xmlElement("fieldlabel", NULL, "canvaswidth");
-		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getCanvasWidth());
-		$a_xml_writer->xmlEndTag("qtimetadatafield");
 		// End Question specific
 
 		// additional content editing information
