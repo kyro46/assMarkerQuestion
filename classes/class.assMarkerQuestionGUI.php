@@ -90,21 +90,8 @@ class assMarkerQuestionGUI extends assQuestionGUI
 		$item = new ilCustomInputGUI($this->plugin->txt('openlayers_area'));
 		$item->setInfo($this->plugin->txt('how_to_use'));
 		
-		/*
-		$tpl->addJavaScript($plugin->getDirectory().'/js/ol-debug.js');
-		//$tpl->addJavaScript($plugin->getDirectory().'/js/jquery-ui-1.10.3.min.js');
-		//$tpl->addJavaScript($plugin->getDirectory().'/js/bootstrap.js');
-		
-		
-		//$tpl->addCss($plugin->getDirectory().'/css/bootstrap.css');
-		//$tpl->addCss($plugin->getDirectory().'/css/bootstrap-responsive.css');
-		$tpl->addCss($plugin->getDirectory().'/css/layout.css');
-		$tpl->addCss($plugin->getDirectory().'/css/ol.css');
-		*/
-		
 		$tpl->addJavaScript($plugin->getDirectory().'/js/ol.js');
 		$tpl->addJavaScript($plugin->getDirectory().'/js/ol3-contextmenu.js');
-		//$tpl->addJavaScript($plugin->getDirectory().'/js/contextmenu.js');
 		
 		$tpl->addCss($plugin->getDirectory().'/css/ol.css');
 		$tpl->addCss($plugin->getDirectory().'/css/ol3-contextmenu.css');
@@ -137,43 +124,6 @@ class assMarkerQuestionGUI extends assQuestionGUI
 			$image->setImage($this->object->getImagePathWeb().$this->object->getImageFilename());
 		}
 		$form->addItem($image);
-
-		/*
-		//cancassize
-		$canvasArea = new ilRadioGroupInputGUI($plugin->txt("canvasArea"), "canvasArea");
-		$canvasArea->addOption(new ilRadioOption($plugin->txt("useImageSize"), 'radioImageSize', ''));
-		$ownSize = new ilRadioOption($plugin->txt("useOwnSize"), 'radioOwnSize', '');
-		$canvasArea->addOption($ownSize);
-		$canvasArea->setValue($this->object->getRadioOption());
-		
-		$sizeWidth = new ilNumberInputGUI($plugin->txt("width"),"sizeWidth");
-		$sizeWidth->setValue($this->object->getCanvasWidth());
-		$sizeWidth->setSize(6);
-		$sizeWidth->setMinValue(100);
-		
-		$sizeHeight = new ilNumberInputGUI($plugin->txt("height"),"sizeHeight");
-		$sizeHeight->setValue($this->object->getCanvasHeight());
-		$sizeHeight->setSize(6);
-		$sizeHeight->setMinValue(100);
-		
-		$ownSize->addSubItem($sizeWidth);
-		$ownSize->addSubItem($sizeHeight);
-		$form->addItem($canvasArea);
-		
-		// brushsize
-		$line = new ilCheckboxInputGUI($plugin->txt("line"), 'lineValue');
-		if ($this->object->getLineValue())
-			$line->setChecked(true);
-		$form->addItem($line);
-		
-		// colourselection
-		$color = new ilCheckboxInputGUI($plugin->txt("color"), 'colorValue');
-		if ($this->object->getColorValue())
-			$color->setChecked(true);
-		$form->addItem($color);
-		
-		*/
-		
 		
 		$this->tpl->setVariable("QUESTION_DATA", $form->getHTML());		
 		//End Question specific		
@@ -257,14 +207,11 @@ class assMarkerQuestionGUI extends assQuestionGUI
 				}	
 			}
 			
-			//##################################################################
 			$this->object->setGeoJSON($_POST['geojson']);
 			$this->object->setOptText($_POST['opttext']);
 			$this->object->setLevenshtein($_POST['levenshtein']);
 			$this->object->setGradeorder($_POST['gradeorder']);
 			$this->object->setPreventchanges($_POST['preventchanges']);
-				
-			//END ##################################################################
 					
 
 			$this->saveTaxonomyAssignments();
@@ -302,37 +249,10 @@ class assMarkerQuestionGUI extends assQuestionGUI
 		$tpl->addCss($plugin->getDirectory().'/css/ol3-contextmenu.css');
 		$tpl->addCss($plugin->getDirectory().'/css/contextmenu.css');
 		
-		/* no previous data needed for preview
-		$geojsonToDoc = $this->object->getGeoJSON();
-		if ($geojsonToDoc == null || $geojsonToDoc == '') {
-			$geojsonToDoc = '{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },"features": []}';
-		};
-		*/
-		
 		$geojsonToDoc = '{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },"features": []}';
-		
-		// get all opttexts and corresponding labels, transform them to base64 and ship array to form
-		$prepareTooltips = $this->object->getGeoJSON();
-		$data = json_decode($prepareTooltips, TRUE);
-		$arr = array();
-		
-		foreach($data['features'] as $item) {
-			$name = $item['properties']['name'];
-			$opttext = $item['properties']['opttext'];
-		
-			$new_array = array($name => $opttext);
-			$arr = array_merge($arr, $new_array);
-		}
-
-		$stripped_json = json_encode($arr);
-		$json_base64 = base64_encode($stripped_json);		
-		
-		$template->setVariable("FEATURES", $json_base64);
-		// end of label => opttext code
-			
+					
 		$template->setVariable("GEOJSON_TEXT", $geojsonToDoc);
 		$template->setVariable("GEOJSON", $geojsonToDoc);
-		$template->setVariable("LEVENSHTEIN", $this->object->getLevenshtein());
 		
 		// END ##################################
 		$template->setVariable("QUESTIONTEXT", $this->object->prepareTextareaOutput($this->object->getQuestion(), TRUE));
@@ -485,7 +405,6 @@ class assMarkerQuestionGUI extends assQuestionGUI
 		
 		$tpl->addJavaScript($plugin->getDirectory().'/js/ol.js');
 		$tpl->addJavaScript($plugin->getDirectory().'/js/ol3-contextmenu.js');
-		//$tpl->addJavaScript($plugin->getDirectory().'/js/contextmenu.js');
 		
 		$tpl->addCss($plugin->getDirectory().'/css/ol.css');
 		$tpl->addCss($plugin->getDirectory().'/css/ol3-contextmenu.css');
@@ -496,91 +415,14 @@ class assMarkerQuestionGUI extends assQuestionGUI
 		
 		if ($show_correct_solution)
 		{			
-			return "<p>___________________________________________________</p>";
+			return "<p>__________________TO_BE_DONE____________________________</p>";
 			//$template->setVariable("ID", $this->object->getId().'CORRECT_SOLUTION');	
 			// TODO hier nur die Musterlösung anzeigen, da wir uns im test beim drücken von check befinden ;)
 		}			
-		else
+		else {
 			$template->setVariable("ID", $this->object->getId());		
-
-		//get background and save in var
-		if ($this->object->getImageFilename())
-		{
-			list ( $width, $height, $type ) = getimagesize ( $this->object->getImagePathWeb().$this->object->getImageFilename() );
-			switch ( $type )
-			{
-				case 1:
-					$background = imagecreatefromgif ($this->object->getImagePathWeb().$this->object->getImageFilename());
-					break;
-				case 2:
-					$background = imagecreatefromjpeg ($this->object->getImagePathWeb().$this->object->getImageFilename());
-					break;
-				case 3:
-					$background = imagecreatefrompng ($this->object->getImagePathWeb().$this->object->getImageFilename());
-			} 
-			//predefine picture in case no drawing exists -> show only background image
-			ob_start();
-			imagepng($background);
-			$image = ob_get_clean();
-			$base64 = base64_encode( $image );	
-		} else 
-		{
-			//transparent pixel, no background
-			//will be overwritten if drawing exists
-			$base64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII=";
 		}
-		//preset formular
-		$template->setVariable("SOLUTION", ilUtil::prepareFormOutput($base64));
-
 		
-		
-		foreach ($user_solution as $solution)
-		{				
-				/*
-				if ($user_solution[0]["value2"])
-				{
-					$content = file_get_contents ( $user_solution[0]["value2"]);
-
-					//merge background and drawing if backgroundimage available
-					if( $this->object->getImageFilename() )
-					{
-						$drawing = imagecreatefromstring($content);
-
-						$x1 = imagesx($background);
-						$y1 = imagesy($background);
-						$x2 = imagesx($drawing);
-						$y2 = imagesy($drawing);
-
-						imagecopyresampled(
-							$background, $drawing,
-							0, 0, 0, 0,
-							$x1, $y1,
-							$x2, $y2);
-
-						ob_start();
-						//resizing the picture to custom values
-						if ($this->object->getRadioOption() == "radioOwnSize")
-						{
-							$resized=imagecreatetruecolor($this->object->getCanvasWidth(),$this->object->getCanvasHeight());
-							imagecopyresampled($resized,$background,0,0,0,0,$this->object->getCanvasWidth(),$this->object->getCanvasHeight(),$x1,$y1);
-							imagepng($resized);
-						} else //use original background
-						{
-							imagepng($background);			
-						}
-						$image = ob_get_clean();
-						$base64 = base64_encode( $image );
-						imagedestroy($background);  
-						imagedestroy($drawing);
-					} else //only use the drawing
-					{
-						$base64 = base64_encode( $content );
-					} 
-				}
-				*/
-				$template->setVariable("SOLUTION", ilUtil::prepareFormOutput($base64));		
-		}		
-
 		$template->setVariable("QUESTIONTEXT", $this->object->prepareTextareaOutput($output, TRUE));
 		
 		if ($result_output)
@@ -593,7 +435,7 @@ class assMarkerQuestionGUI extends assQuestionGUI
 		}			
 		
 		//GeoJSON
-		// letzte gespeicherte Eingabe anzeigen
+		// show last saved input
 		$geojsonToDoc = "";
 		if ($user_solution[0]["value1"])
 		{
