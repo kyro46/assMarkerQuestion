@@ -6,6 +6,8 @@ Questiontypeplugin for ILIAS 5.1.x
 
 This plugin is using [**OpenLayers 3**](http://openlayers.org) and the [**OL3-Contextmenu**](https://github.com/jonataswalker/ol3-contextmenu) to display even very large images in a "google maps"-style.
 
+Markers and Polygons can be created by right-clicking, dragging the image itself is done with the left mousebutton.
+
 As examiner:
 * create and label polygons to describe areas of interest
 * edit form and label of polygons
