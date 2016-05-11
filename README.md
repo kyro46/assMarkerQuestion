@@ -2,16 +2,13 @@
 
 Questiontypeplugin for ILIAS 5.1.x
 
-For the buggy prototype developed for ILIAS 4.4 see the [**Releases**](https://github.com/kyro46/assMarkerQuestion/releases)
-
-Based on OpenLayers 3
-
 ### Questiontype that allows placing and labelling markers on a freely zoomable image ###
 
 This plugin is using [**OpenLayers 3**](http://openlayers.org) and the [**OL3-Contextmenu**](https://github.com/jonataswalker/ol3-contextmenu) to display even very large images in a "google maps"-style.
 
 As examiner:
 * create and label polygons to describe areas of interest
+* edit form and label of polygons
 * set points to grant for the correct label and/or the correct position of a marker
 * set levenshtein distance for labels
 
@@ -28,7 +25,7 @@ The question supports automatic scoring. The Examiner can choose whether points 
 
 ### Usage ###
 
-Install the plugin
+Install the plugin, starting from your ILIAS-directory
 
 ```bash
 mkdir -p Customizing/global/plugins/Modules/TestQuestionPool/Questions  
