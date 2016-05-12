@@ -74,17 +74,17 @@ class assMarkerQuestionGUI extends assQuestionGUI
 		$form->addItem($levenshtein);
 		/*
 		 * no such things anymore!
-		// gradeorder
-		$gradeorder = new ilCheckboxInputGUI($plugin->txt("gradeorder"), 'gradeorder');
-		if ($this->object->getGradeorder())
-			$gradeorder->setChecked(true);
-		$form->addItem($gradeorder);
+		// predefmarker
+		$predefmarker = new ilCheckboxInputGUI($plugin->txt("predefmarker"), 'predefmarker');
+		if ($this->object->getPredefmarker())
+			$predefmarker->setChecked(true);
+		$form->addItem($predefmarker);
 		
-		// preventchanges
-		$preventchanges = new ilCheckboxInputGUI($plugin->txt("preventchanges"), 'preventchanges');
-		if ($this->object->getPreventchanges())
-			$preventchanges->setChecked(true);
-		$form->addItem($preventchanges);
+		// showpolygons
+		$showpolygons = new ilCheckboxInputGUI($plugin->txt("showpolygons"), 'showpolygons');
+		if ($this->object->getShowpolygons())
+			$showpolygons->setChecked(true);
+		$form->addItem($showpolygons);
 		*/
 		
 		$item = new ilCustomInputGUI($this->plugin->txt('openlayers_area'));
@@ -208,10 +208,9 @@ class assMarkerQuestionGUI extends assQuestionGUI
 			}
 			
 			$this->object->setGeoJSON($_POST['geojson']);
-			$this->object->setOptText($_POST['opttext']);
 			$this->object->setLevenshtein($_POST['levenshtein']);
-			$this->object->setGradeorder($_POST['gradeorder']);
-			$this->object->setPreventchanges($_POST['preventchanges']);
+			$this->object->setPredefmarker($_POST['predefmarker']);
+			$this->object->setShowpolygons($_POST['showpolygons']);
 					
 
 			$this->saveTaxonomyAssignments();
@@ -325,26 +324,7 @@ class assMarkerQuestionGUI extends assQuestionGUI
 		} else {
 			$geojsonToDoc = '{"type": "FeatureCollection","crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },"features": []}';
 		}
-		
-		// get all opttexts and corresponding labels, transform them to base64 and ship array to form
-		$prepareTooltips = $this->object->getGeoJSON();
-		$data = json_decode($prepareTooltips, TRUE);
-		$arr = array();
-		
-		foreach($data['features'] as $item) {
-			$name = $item['properties']['name'];
-			$opttext = $item['properties']['opttext'];
-		
-			$new_array = array($name => $opttext);
-			$arr = array_merge($arr, $new_array);
-		}
-		
-		$stripped_json = json_encode($arr);
-		$json_base64 = base64_encode($stripped_json);
-		
-		$template->setVariable("FEATURES", $json_base64);
-		// end of label => opttext code
-			
+
 		$template->setVariable("GEOJSON_TEXT", $geojsonToDoc);
 		$template->setVariable("GEOJSON", $geojsonToDoc);
 		$template->setVariable("LEVENSHTEIN", $this->object->getLevenshtein());

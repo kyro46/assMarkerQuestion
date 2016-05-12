@@ -33,10 +33,9 @@
 	$fields = array(
 			'question_fi'	=> array('type' => 'integer', 'length' => 4, 'notnull' => true ),
 			'geojson' 		=> array('type' => 'text', 'length' => 1000, 'notnull' => true  ),
-			'opttext'		=> array('type' => 'text', 'length' => 1000 ),
 			'levenshtein'	=> array("type" => "integer", 'length' => 4, "default" => 3, 'notnull' => true),
-			'gradeorder'	=> array('type' => 'integer', 'length' => 1, 'default' => 0),
-			'preventchanges'	=> array('type' => 'integer', 'length' => 1, 'default' => 0)
+			'predefmarker'	=> array('type' => 'integer', 'length' => 1, 'default' => 0),
+			'showpolygons'	=> array('type' => 'integer', 'length' => 1, 'default' => 0)
 	);
 	$ilDB->createTable("il_qpl_qst_marker_data", $fields);
 	$ilDB->addPrimaryKey("il_qpl_qst_marker_data", array("question_fi"));	

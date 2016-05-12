@@ -16,10 +16,9 @@ class assMarkerQuestion extends assQuestion
 
 	var $image_filename = "";
 	var $geojson = "";
-	var $opttext = "";
 	var $levenshtein = 3;
-	var $gradeorder = 0;
-	var $preventchanges = 0;
+	var $predefmarker = 0;
+	var $showpolygons = 0;
 	
 	/**
 	* assMarkerQuestion constructor
@@ -104,16 +103,6 @@ class assMarkerQuestion extends assQuestion
 		return $this->geojson;
 	}
 	
-	function setOptText($value)
-	{
-		$this->opttext = $value;
-	}
-	
-	function getOptText()
-	{
-		return $this->opttext;
-	}
-	
 	function setLevenshtein($value)
 	{
 		$this->levenshtein = $value;
@@ -124,24 +113,24 @@ class assMarkerQuestion extends assQuestion
 		return $this->levenshtein;
 	}
 	
-	function setGradeorder($value)
+	function setPredefmarker($value)
 	{
-		$this->gradeorder = $value;
+		$this->predefmarker = $value;
 	}
 	
-	function getGradeorder()
+	function getPredefmarker()
 	{
-		return $this->gradeorder;
+		return $this->predefmarker;
 	}
 	
-	function setPreventchanges($value)
+	function setShowpolygons($value)
 	{
-		$this->preventchanges = $value;
+		$this->showpolygons = $value;
 	}
 	
-	function getPreventchanges()
+	function getShowpolygons()
 	{
-		return $this->preventchanges;
+		return $this->showpolygons;
 	}
 	//END Getter/Setter
 	
@@ -217,16 +206,15 @@ class assMarkerQuestion extends assQuestion
 			$this->image_filename = $data["image_file"];
 		}		
 		
-		$resultCheck= $ilDB->queryF("SELECT geojson, opttext, levenshtein, gradeorder, preventchanges FROM il_qpl_qst_marker_data WHERE question_fi = %s", array('integer'), array($question_id));
+		$resultCheck= $ilDB->queryF("SELECT geojson, levenshtein, predefmarker, showpolygons FROM il_qpl_qst_marker_data WHERE question_fi = %s", array('integer'), array($question_id));
 		if($ilDB->numRows($resultCheck) == 1)
 		{
 			$data = $ilDB->fetchAssoc($resultCheck);
 
 			$this->setGeoJSON($data["geojson"]);
-			$this->setOptText($data["opttext"]);
 			$this->setLevenshtein($data["levenshtein"]);
-			$this->setGradeorder($data["gradeorder"]);
-			$this->setPreventchanges($data["preventchanges"]);
+			$this->setPredefmarker($data["predefmarker"]);
+			$this->setShowpolygons($data["showpolygons"]);
 		}
 				
 		try
@@ -271,15 +259,14 @@ class assMarkerQuestion extends assQuestion
 			array("integer"),
 			array($this->getId())
 		);
-		$affectedRows = $ilDB->manipulateF("INSERT INTO il_qpl_qst_marker_data (question_fi, geojson, opttext, levenshtein, gradeorder, preventchanges) VALUES (%s, %s, %s, %s, %s, %s)", 
-				array("integer", "text", "text", "integer", "integer", "integer"),
+		$affectedRows = $ilDB->manipulateF("INSERT INTO il_qpl_qst_marker_data (question_fi, geojson, levenshtein, predefmarker, showpolygons) VALUES (%s, %s, %s, %s, %s)", 
+				array("integer", "text", "integer", "integer", "integer"),
 				array(
 					$this->getId(),
 					$this->geojson,
-					$this->opttext,
 					$this->levenshtein,
-					$this->gradeorder,
-					$this->preventchanges				
+					$this->predefmarker,
+					$this->showpolygons				
 				)
 		);
 			
