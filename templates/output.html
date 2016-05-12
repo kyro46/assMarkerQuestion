@@ -250,10 +250,11 @@
         var markerStyle = new ol.style.Style({
             image: new ol.style.Icon({
               scale: .6,
-              src: markerImage
+              src: markerImage,
+              anchor: [0.5, 1],
             }),
             text: new ol.style.Text({
-              offsetY: 25,
+              offsetY: 15,
               text: partFeature.get('name'),
               font: '15px Open Sans,sans-serif',
               fill: new ol.style.Fill({ color: '#111' }),
