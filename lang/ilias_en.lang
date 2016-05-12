@@ -3,8 +3,10 @@ points#:#Points
 save#:#Save
 errorInput#:#Invalid input
 image#:#Background Image
-levenshtein#:#Levenshteindistance
-gradeorder#:#Grade order
-preventchanges#:#Prevent changes of a givven solution
+levenshtein#:#Levenshtein distance
+predefmarker#:#Allow only predefinded Markers
+showpolygons#:#Show areas of interest (polygons) during test
 openlayers_area#:#OpenLayers area
-how_to_use#:#TODO - How to use
+info_predefmarker#:#Restrict the available markers to the ones definded below.
+info_showpolygons#:#Show the areas of interest (polygons) to examinees. Labels are not shown.
+info_editor#:#Areas can be added and edited via right click.<br/>While creating a polygon, holding the shift-key triggers the freehand draw mode.<br/>Single corners of polygons can be deleted with a double click while holding the shift-key.

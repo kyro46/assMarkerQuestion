@@ -1,10 +1,12 @@
-questionType#:#Marker Aufgabe
+questionType#:#Marker-Frage
 points#:#Punkte
 save#:#Speichern
 errorInput#:#Eingaben unvollständig
 image#:#Hintergrundbild
 levenshtein#:#Levenshteinabstand
-gradeorder#:#Reihenfolge bewerten
-preventchanges#:#Nachträgliche Änderungen verhindern
+predefmarker#:#Auf vorgegebene Marker beschränken
+showpolygons#:#Zielbereiche im Test anzeigen
 openlayers_area#:#OpenLayers-Bereich
-how_to_use#:#TODO - Nutzungshilfe
+info_predefmarker#:#Prüflinge dürfen nur die unten vorgegebenen Marker verwenden.
+info_showpolygons#:#Hiermit können dem Prüfling die verfügbaren Zielpositionen gezeigt werden. Label werden nicht angezeigt.
+info_editor#:#Bereiche können per Rechstklick erstellt und editiert werden.<br/>Während der Polygonerstellung kann durch halten der Shift-Taste in den Freihandzeichenmodus gewechselt werden.<br/>Einzelne Ecken eines fertigen Polygons können bei gehaltener Shift-Taste per Doppelklick entfernt werden.

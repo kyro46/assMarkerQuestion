@@ -72,23 +72,25 @@ class assMarkerQuestionGUI extends assQuestionGUI
 		$levenshtein->setRequired(true);
 		$levenshtein->setValue($this->object->getLevenshtein());
 		$form->addItem($levenshtein);
-		/*
-		 * no such things anymore!
+
+
 		// predefmarker
 		$predefmarker = new ilCheckboxInputGUI($plugin->txt("predefmarker"), 'predefmarker');
 		if ($this->object->getPredefmarker())
 			$predefmarker->setChecked(true);
+		$predefmarker->setInfo($this->plugin->txt('info_predefmarker'));
 		$form->addItem($predefmarker);
 		
 		// showpolygons
 		$showpolygons = new ilCheckboxInputGUI($plugin->txt("showpolygons"), 'showpolygons');
 		if ($this->object->getShowpolygons())
 			$showpolygons->setChecked(true);
+		$showpolygons->setInfo($this->plugin->txt('info_showpolygons'));
 		$form->addItem($showpolygons);
-		*/
+
 		
 		$item = new ilCustomInputGUI($this->plugin->txt('openlayers_area'));
-		$item->setInfo($this->plugin->txt('how_to_use'));
+		$item->setInfo($this->plugin->txt('info_editor'));
 		
 		$tpl->addJavaScript($plugin->getDirectory().'/js/ol.js');
 		$tpl->addJavaScript($plugin->getDirectory().'/js/ol3-contextmenu.js');
