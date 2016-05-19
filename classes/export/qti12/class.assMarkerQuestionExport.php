@@ -65,24 +65,19 @@ class assMarkerQuestionExport extends assQuestionExport
 		$a_xml_writer->xmlEndTag("qtimetadatafield");
 
 		$a_xml_writer->xmlStartTag("qtimetadatafield");
-		$a_xml_writer->xmlElement("fieldlabel", NULL, "optText");
-		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getOptText());
-		$a_xml_writer->xmlEndTag("qtimetadatafield");
-
-		$a_xml_writer->xmlStartTag("qtimetadatafield");
 		$a_xml_writer->xmlElement("fieldlabel", NULL, "levenshtein");
 		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getLevenshtein());
 		$a_xml_writer->xmlEndTag("qtimetadatafield");
 		
 		$a_xml_writer->xmlStartTag("qtimetadatafield");
-		$a_xml_writer->xmlElement("fieldlabel", NULL, "gradeorder");
-		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getGradeorder());
+		$a_xml_writer->xmlElement("fieldlabel", NULL, "predefmarker");
+		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getPredefmarker());
 		$a_xml_writer->xmlEndTag("qtimetadatafield");
 		
 
 		$a_xml_writer->xmlStartTag("qtimetadatafield");
-		$a_xml_writer->xmlElement("fieldlabel", NULL, "preventchanges");
-		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getPreventchanges());
+		$a_xml_writer->xmlElement("fieldlabel", NULL, "showpolygons");
+		$a_xml_writer->xmlElement("fieldentry", NULL, $this->object->getShowpolygons());
 		$a_xml_writer->xmlEndTag("qtimetadatafield");
 		
 		// backgroundImage

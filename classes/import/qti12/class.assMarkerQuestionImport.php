@@ -102,10 +102,9 @@ class assMarkerQuestionImport extends assQuestionImport
 		$this->object->setPoints($item->getMetadataEntry("points"));
 		
 		$this->object->setGeoJSON($item->getMetadataEntry("geojson"));
-		$this->object->setOptText($item->getMetadataEntry("optText"));
 		$this->object->setLevenshtein($item->getMetadataEntry("levenshtein"));
-		$this->object->setGradeorder($item->getMetadataEntry("gradeorder"));
-		$this->object->setPreventchanges($item->getMetadataEntry("preventchanges"));
+		$this->object->setPredefmarker($item->getMetadataEntry("predefmarker"));
+		$this->object->setShowpolygons($item->getMetadataEntry("showpolygons"));
 
 		// additional content editing mode information
 		$this->object->setAdditionalContentEditingMode(
