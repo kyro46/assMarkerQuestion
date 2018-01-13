@@ -826,7 +826,8 @@ class assMarkerQuestion extends assQuestion
 	*/
 	function getAdditionalTableName()
 	{
-		return "";
+		return array('il_qpl_qst_marker_data',
+				'il_qpl_qst_marker_img');
 	}
 	
 	/**
