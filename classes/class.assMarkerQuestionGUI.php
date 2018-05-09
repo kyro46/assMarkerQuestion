@@ -1,4 +1,4 @@
-I<?php
+<?php
 
 include_once "./Modules/TestQuestionPool/classes/class.assQuestionGUI.php";
 include_once "./Modules/Test/classes/inc.AssessmentConstants.php";
