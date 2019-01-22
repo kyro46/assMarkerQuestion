@@ -1,6 +1,6 @@
 # MarkerQuestion
 
-Questiontypeplugin for ILIAS 5.1.x
+Questiontypeplugin for ILIAS 5.3.x
 
 ### Questiontype that allows placing and labelling markers on a freely zoomable image ###
 

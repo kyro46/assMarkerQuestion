@@ -1,321 +1,459 @@
- <p>{QUESTIONTEXT}</p>
-    <div id="map"></div>
- <form method="POST" action="" id="answerForm">
-	<input type="hidden" id="geojson" name="geojson" value='{GEOJSON_TEXT}' />
-</form>   
+<p>{QUESTIONTEXT}</p>
+<div id="map"></div>
+<form method="POST" action="" id="answerForm">
+    <input type="hidden" id="geojson" name="geojson" value='{GEOJSON_TEXT}'/>
+</form>
 <div id="out"></div>
 <br/>
-    <script>
-    (function(win, doc){
-    	'use strict';
-   
-        var markerImage = 'data:image/png;base64,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';
+<script>
+    $().ready(function () {
+        (function (win, doc) {
+            'use strict';
 
-    	  var draw; // global so we can remove it later
-          var existingGeoJSON = {GEOJSON};   
-          
-          var features = new ol.Collection();
-          var featureOverlay = new ol.layer.Vector({
-            source: new ol.source.Vector({features: features, wrapX: false}),
-            style: new ol.style.Style({
-              fill: new ol.style.Fill({
-                color: 'rgba(255, 255, 255, 0.2)'
-              }),
-              stroke: new ol.style.Stroke({
-                color: '#ffcc33',
-                width: 2
-              }),
-              image: new ol.style.Circle({
-                radius: 7,
-                fill: new ol.style.Fill({
-                  color: '#ffcc33'
-                })
-              }),
-              text: new ol.style.Text({
-          	    textAlign: 'center',
-        	    textBaseline: 'middle',
-        	    font: '14px helvetica,sans-serif',
-        	    text: "hallo welt",
-        	    fill: new ol.style.Fill({color: '#000'}),
-        	    stroke: new ol.style.Stroke({color: '#fff', width: 2}),
-        	    offsetX: 0,
-        	    offsetY: 0,
-        	    rotation: 0
-              })
-            })
-          });
+            var markerImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wgbACMPtsL19QAAD/FJREFUeNrdmnuYXWV1xn9r7XOZWyYhISEhQSUCoqBcxGsVhLRUwPqUchEUH2utLSLlAWxpkVIqImCttRWqFayWyq2AUosIeENMIqBiHohcZEIkXJIAk8tMMrdz9rdW//i+fc6eIUGTZiax+8k32fvMmXP2ete73nX5tjDFx7efPfnNm5qr9ndsgaDd4MGwYYGnZtcPfXjRvKuWTeX9yGR98B3Pnsox82/gh2vP2P250WVnqlTes1ttv/17qwvpqS6gI5uFShXcCN5gNKxjsPkkA40VDDSfeCB447oj5vzzv83vPmLk+6s/zKI9r/7tAOA7qz/A0XtewzdWHXnAmA1+fnb9kKMWdB/JnI7DEFGG87UM5WtphI0YebwJqVDX3eiuzKMr24PgI6wZuY+nhu5ioLHi5hnV15x97F7Xr77z2ffyzvnX77oAvON2uPCgM+vPNZbeMLvjkOP36z2FzspMnh9dRv/YcjY2HsckkEkVyNINOIbhlmPeQKWDmbVXMbt+CLPrB7Ox0cdjg9cx2Fj5xfe98qEzbvrVWzl57x/vmgDc9OTbjxD8BwfM+JD2VvfmmeEfsmZ0KY5Q0RoiGZAhIogoAO6GuwMB94B5wMnJbYzMKyzoPpL5nUfw3Oj9/HLgxg2gbzp14U/7djkAblz5hnO6qvP+6XUzTqd/7CFWDd0JUiHTCipVRCqoZMnwDEERwDDA2sZ7TvAc92a8tgZCxj7TTqS7Oo8H111B7sPvOmXhz27fZQC4YeVhl0+vLvzr/WacTN/ALWwOT6PSQaYVRKqoVFGpoFIByRIQgkcKYB7Ac8wD5jEUzHPMmhEYckIYZlb9IPbuOY7lG77EcL7utNP2WXbdTgfg+icOPX1ada8vLux9N48NfA3zJqI1VDJUqmRSQxMLVGIYRCDaIWCeg4dkeJNgTcyLFfAWIDn1bDde1Xsqj2y8hrF8aNFp+z7wg50CwNdWHEhVOw7NpPOBfXtPpG/TTTiGSEaWvB6BSAxI51kCR6gkAPLoYWvi3iTYGOZ5NNqaBG+WwiLHyanQw769J7B8/TVk3jW3aZuf+8D+D26XHbpdYrfybbx/n1+QW2PJy3uOpm/wJgLNhKjiIrgKkiJdVFEU1QwlQ6VGlsWlWkOpoJoBimiGIjiCi6Q8IelG43XTBnhi0zdZOO1YRsLzi7fX+O0G4OSFS7im74AvzOk8tHP18FJyHwYHEQEBcZBELldFXEEFdQXNIhBSI0shgcT3iCq4xGsUFYkLx4mfHYVDGAn9rB/7JTM7Xr3vvz/ymrOmDIDr+t7A1x5/46wK9Y8IylC+OnpGwD35S6QVW+KOY+AkMxw3T7Fv0SIhhk/8AHCL78MxfHykplMRZd3ocrorczHCv0ypBnzlsf2/PKfztR8ayPsQDNEKQoVMMigUX6ttEcxqZNRQrdLZ1cXG55s8+pN+Xlg9hKiz+/w6B75lJtVuozk6Sm5NjAYWki54s50WCbgFLAEo1kFnNof+kb7zTn/tis9sqy2V7STOh5o2hHsOUgEcTd7KiN4TNwTDNeDByLqc5T96jusue4RHf76Oel2RTGMlEGBsJHDoUXN4/wX7stf+dULDgciQWC0WVaO3tcGh6UN0iuJuHwc+M6kM+PLDrwbs1K7a7tfnPohkQiZR6hAloxIZkGK8yP3Vep0rz3qUH//PWqp1QUTIslgLgGPm5HkOOKPDxvFnvpxTz1/AyPBYTIUWwJsEYrp0nGBGCAEzQ7wDd2jkQ68//aC+n0+aBvzpAY9ibifEDi4Hi2Ws47GgERBCfM1jdVepw8UnLeNn33mBzu4qPd3d9HR10VGvU6/VqNXqdHd1Mb23l56eafRMr3PHV1bzhXP6qNZjnQAhaUFSEfdYPovgLjRsEypVgjdPmnQRNLd3NmwkilpxI3iUfg+JtDFfS2bcePkqfrV8M50ddTo7oqeikCcmqIJGxa9UKkzrmUZPTxf3fWuAH928DiSJaIIADNL3uhkuBihNG8GcRZMKwH88elBFybrzMIp7vC2SXzypvXueCpzAYP8Yt39pLZ1dHWiWRboKsS4QQTWmvkwkgpBliCr1ep3p07u54ZLno46kfCApa1gqoSMIkX3BGuD+hkkFYKS56QCHpMaAxfhNd9TyUBRH544v9zNtej0KjRmimjrBWByJamRAAkO1nftr9Tr1Wp0lX98Ebq2U6EZKozHtRiAgeBNQrrh/n/qkARCMuZ5uxs1iH59+RttDYoNRqQceunsoVXjeMl6zrGWoFJ4vvA9RQNPvO7o6ePieBlnVwFrwJjDSdye9MUuM0MbcyUuDbpk5iAmaRQ+YgaSmVlWjtwRC01j3jNPVY1B4fiIDoHWNKuqOi6a0GrWif5UiFYOGRc9bMtbidxdMiCEILl6bNADMDUzIVCL1iTFtIrGEdUcFxI1GI0ejhdHbBQMS5WXCUom1f6aaqkYQgdCMnYE5mDvmEQhzaw1TLClrsJDiYpIAcGfAseR1cJG28ZYkURUVJ0sMkZLBKvIiQAoWILGmcFW0BIBWomFmjoXW+KRFezNLrCjCxIcnDwD8yWAgmWG82PDWOUK9C2bOrTE26uNp/hKhQGKAe5wYusDchUqz0cRCFEEzi0Ck3qJQIncnuKPi/ZMmgme//ulnCwYU6Jv7hPNYp48M5xx4eFdsh0tUL7OhHBYyTghjOw3Cfm/OaI6F9NnJ68QpkgWLWuCFKDofe9OasUkthNx8edGItG7KLd2cYSGWqXnTOPyUXsZGw4vivcyGlvFF65tlZFlGJauAKQcfEz/TvPB88V0kIAwvgDBfMemVYHC7c5zXx/0fyAsgzNntFUO8+Zj5bc+XVH8iGwrDs6yYFyiLTptBLoOEiQxLImipDimAINi9kw6AwE2h5YnxngkhilNIIAyPDPO+i/ZgxqzOmB0mxn0pPWqpHsg042Wv7uGNJ40RQvysULTABRsK5hX3EZyAf++ypXtM/jzgH+6dN6AqvSqKqqCiiIKiiKb4FkUkSufePcfy6T+7n9WrNlGpVRBo9QDR4xI7x4piubP/YbM48bwunhr4CYLEYseKDRTGg5/YEYKh1dBx/lvWb5MGZNsDwKIPdtUReUcxovKUI4qC0CmXxsrGRh/v+cCxzJy2J4/8/GmaTUMrWcvrokpoGr0zuzjtrMN4yymBJzfc2za+AKCo+CzVgaXwc7MlF7x9/dXbwehtPy69f0FNmo2xLFNEFC28L4JqO761NSsAp8mcrtdx4Nzj6XtgiEcfWsW6FwaQTJm75wxec8hezH7lML9YexuDjWcoZmxFoeOWSuAkgE47HEJwROzdLnLbhYevm5qx+KWLd79K0Q9LFgEohpiiJbVHEXFEBTyeBx9jWnUBMzv3pas6E/fA5rEX6B99jJF8A5lWUrMjtPuOwviU+Y2YAtN5MO+/6Mh1s6dsJvipH83Bgk7TLAxq0d6mvK2aNr10PADiQlHgp3zQLq8kDT4tnre7PW9NjKx1nkphI2mCY+5/6Og3P3HUuqkBoDguvnvWZ1U5V1XjHoBGBkASRvEIhCuiHlmgba0o34WbgBhuEocciQXF5NitYEABQqwDQvAHL/7dDQfvtK2xi++e1RCl2qrzKYdBKnEpgPHEBGmDILQ8DxIHHMWAxVMoJNGjpAfmxPofna9qq//+qI3bdf+V/ysAhn2QINe6OipCIHlcrLUNLhK7yLgdKJDHMGhlD0mDDZM0UJFWp9cKhcJ4wM0I7mB8/JNHr1+903eHL/zejGWZysFC2+uxrW8zgaQHrS8ubY62u80CgGS0pL6/mPyU9cD94UuOHjxwp+8OX/T96TRN5mb4mnalB+LJcJW4VaZEDUj1Z9v/Qto4ShoQu0AKIWyJoozr/50wU8k2fOr3N+0aD0hccFfPhUh2cZICIhsKr7erwmLvcFyDVdrzi/MMG58GUyi0wsD9jy4/ZujWXe4RmfPv7HlKhL2EtMGpUfSkED2htfNbyoLpR9vjpEzgJq2BqKeJkJjdcvlxIyftqHvWHfVBf3NHN8FsUQjtZsiCEcwJIcSOLhi5BYLnBEvLc4IFQnqvpb8PuWEe0g6QFVOhgcuPGznpvDu6d5jTdvhjcn/17Y7P4Xp24X1aRZDHbfKJu70tGhT5XxILiqJISg9S+cEi+uA/vmuUXY4BAH/5rU4+c+zoOWa2KeSFRwPBDcuN4JEJwcP4lV6L77H4N+aE4jqO4K/47B80HhzaGHaow3Y4A87+ZhfuzaNVuAvVuOev6XmBcdmglAWS+lPUR+btTIBjxvrPH5/POu+umtz8t01+9dNtHP1OJQDFcdat2T0Ih4sUICjtuscnBEBJFM3iIzZmMZ24MTLI2x9f4j9++Lsu/atafbaXZZTS8yM7HYC/+IZibnsK8mxkASn3aeyHxMc1Q+KS9hljERC9bzhCY9huv/r9vKvaSUc+1qqb2g8PtI2239AenxIGAJxxM1chfDh+UXKQbkV2rHgEwos9CFThq3/CvOEBhkvGlg2feG3bNOXf0SJYPj5yMzSFM4snu2IFF/v4La5W+1t0k8L6p+TS4QHG0uSqWJXSuU4412116qQyAOCjX5cLgEsi1dvQlwNXyhVhusrHGPzSe/1lQL3k5a15P5TCoHjddioDiuNfT/BPichosRdAaVs8S+et10XTQxPC6kf4mAjdW/B02dvFeSUhN/G9sqW4L19POgCx85MzVLTlbZlAwdZKfcToZnnitkv8G+4tI7ZkoE54rTLhdzohXLYoglMCwBXHh6+K8Lxo+8GILS5RKhXl4e/ZOSL0lox/KQN1C8BsSRd00ivBrR1XPg0h58+zxAKdsATIJK7N/dy39Bpf5r5VA7MJFM+2AEz5o+WldG9KALjvVuXKE8N/N0ZZmZUfh0krPiajaEW55yvh76AV+7IVw7bm5XLMW2ltqW6YOgCuPcv44y9WtH+lny4VnRj58Z/A4HPc/fhif7JkYDn2s61oQNngkFaervPSOTstBADWPO72X+fn321s5kHJ0tRIQTJpxf5tlzUvBTomGFvZAq3LHm6m1UirfG68OPPuHADu+lzgPZ+u6fAAHxm3URqzBBvX+JK1fb72JWKZkpebwBgwmtZYWgUAv9bwKSuEtnSce2vn0mqdt7a8UIGbLxo7YcW99tSEmA0lGjcneLtZ+r3/JsbuVAYUx8mfqPH0I+Gjkkkr8W9Yw0Mr7rWVJY/7BE8PA0PAZmBTuh5NQIQSaLtOO/xr5wa3dC3u6JG3qcLi/2x8dPG1zWXJ4DwZVtB6pOT1vBT7sr1G71QGABx3bi3rWxo+lmXC6Gb6F1/bvKfk7aHk5UFgIHl9aAIA7Ajjd8jO0LYerzhUGXjebcm1jQf2+53qfeue9h8kRxSGjiR6N0sGO/+fjhnzkO7dpOP4j3f8Xud02Q/YC5gDTANqbOeDG79Vxx77SJZy/jSgJ7W92VTr0v8CnUn6RPIDzwMAAAAASUVORK5CYII=';
 
-      var 
-      view = new ol.View({
-          center: [0, 0],
-          zoom: 0,
-  		  projection: 'EPSG:4326',
-          minZoom: 0,
-          maxZoom: 4
-        }),
-        imageLayer = new ol.layer.Image({
-    		title: "image",
-    		opacity: 1,
-    		source: new ol.source.ImageStatic({
-    		  url: '{IMAGE_PATH}',
-      		  projection: 'EPSG:4326',
-    		  //url: 'uhd.jpg',
-    		  //ToDo Adjust dimensions according to uploaded image: +/-x:2 and +/-y:2 minx,miny,maxx,maxy
-    		  imageExtent: [-390, -303, 390, 303],
-    		  //Size in Pixels:
-    		  imageSize: [780, 606]
-    		})
-    	  }),
-        map = new ol.Map({
-          target: doc.getElementById('map'),
-          logo: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" ,
-          view: view,
-          layers: [imageLayer, featureOverlay]
-        }),
-        // from https://github.com/DmitryBaranovskiy/raphael
-        elastic = function(t) {
-          return Math.pow(2, -10 * t) * Math.sin((t - 0.075) * (2 * Math.PI) / 0.3) + 1;
-        },
-        center = function(obj){
-          var pan = ol.animation.pan({
-            duration: 1000,
-            easing: elastic,
-            source: view.getCenter()
-          });
-          map.beforeRender(pan);
-          view.setCenter(obj.coordinate);
-        },
-        marker = function(obj){
-        	   draw = new ol.interaction.Draw({
-        		      features: features,
-        		      type: /** @type {ol.geom.GeometryType} */ ('Polygon')
-        		    });
-        		    map.addInteraction(draw);
-        };
-        
-        var existingFeatures = new ol.format.GeoJSON().readFeatures(existingGeoJSON);
-        featureOverlay.getSource().addFeatures(existingFeatures);
-        var listOfExistingFeatures = featureOverlay.getSource().getFeatures();
-        for (var partFeature of listOfExistingFeatures) {
-        	
-        	
-        	partFeature.setStyle(new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(255, 255, 255, 0.2)'
-                  }),
-                  stroke: new ol.style.Stroke({
-                    color: '#ffcc33',
-                    width: 2
-                  }),
-                  image: new ol.style.Circle({
-                    radius: 7,
+            var draw; // global so we can remove it later
+            var existingGeoJSON = {GEOJSON};
+
+            var features = new ol.Collection();
+            var featureOverlay = new ol.layer.Vector({
+                source: new ol.source.Vector({features: features, wrapX: false}),
+                style: new ol.style.Style({
                     fill: new ol.style.Fill({
-                      color: '#ffcc33'
+                        color: 'rgba(255, 255, 255, 0.2)'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#ffcc33',
+                        width: 2
+                    }),
+                    image: new ol.style.Circle({
+                        radius: 7,
+                        fill: new ol.style.Fill({
+                            color: '#ffcc33'
+                        })
+                    }),
+                    text: new ol.style.Text({
+                        textAlign: 'center',
+                        textBaseline: 'middle',
+                        font: '14px helvetica,sans-serif',
+                        text: "hallo welt",
+                        fill: new ol.style.Fill({color: '#000'}),
+                        stroke: new ol.style.Stroke({color: '#fff', width: 2}),
+                        offsetX: 0,
+                        offsetY: 0,
+                        rotation: 0
                     })
-                  }),
-                  text: new ol.style.Text({
-              	    textAlign: 'center',
-            	    textBaseline: 'middle',
-            	    font: '14px helvetica,sans-serif',
-            	    text: "hallo welt",
-            	    fill: new ol.style.Fill({color: '#000'}),
-            	    stroke: new ol.style.Stroke({color: '#fff', width: 2}),
-            	    offsetX: 0,
-            	    offsetY: 0,
-            	    rotation: 0
-                  })
-                }));
-        	partFeature.getStyle().getText().setText(partFeature.get('name'));
-
-        }        
-        
-        function showInputForUser() {
-            var arr = JSON.parse(document.getElementById('geojson').value);
-            var i;
-            var out = "<table><tr><td>Name</td><td>Punkte f&uuml;r Label</td><td>Punkte für Position</td></tr>";
-
-            for(i = 0; i < arr.features.length; i++) {
-                out += "<tr><td>" + 
-                arr.features[i].properties.name +
-                "</td><td style='text-align: right;'>" +
-                arr.features[i].properties.points_answer +
-                "</td><td style='text-align: right;'>" +
-                arr.features[i].properties.points_position +
-                "</td></tr>";
-            }
-            out += "</table>";
-            document.getElementById("out").innerHTML = out;
-        }
-        
-        showInputForUser();
-        
-        
-      var contextmenu_items = [
-         {
-          text: 'Add a Polygon',
-          icon: markerImage,
-          callback: marker
-        }
-      ];
-      var contextmenu = new ContextMenu({
-        width: 180,
-        default_items: false,
-        items: contextmenu_items
-      });
-      map.addControl(contextmenu);
-      
-      var removeMarker = function(obj){
-    	  featureOverlay.getSource().removeFeature(obj.data.marker);
-        
-    	var  format = new ol.format.GeoJSON();
-    	var data;
-    	data = format.writeFeatures(featureOverlay.getSource().getFeatures());
-    	document.getElementById('geojson').value = data;
-        showInputForUser();
-
-        
-      };
-      var editMarker = function(obj){
-    	  
-    	  var oldname = obj.data.marker.getStyle().getText().getText();
-    	  var name = prompt("Please enter the name", oldname);
-
-    	  //this won't work in safari browser
-    	  //in safari, canceling a prompt will return "" instead of null, as all other browsers do
-    	  if (name == null) {
-    		  name = oldname;
-    	  }
-    	  
-    	  
-    	  //Save Name to Label and to JSON, refresh Layer
-    	  obj.data.marker.getStyle().getText().setText(name);
-    	  obj.data.marker.set('name', name);
-    	  
-    		var  format = new ol.format.GeoJSON();
-    		var data;
-    		data = format.writeFeatures(featureOverlay.getSource().getFeatures());
-    		document.getElementById('geojson').value = data;
-            showInputForUser();
-
-    		featureOverlay.getSource().changed();
-    	};
-    	
-    	//TODO Add additional option: MOVE polygon
-    	
-      var editMarkerItem = {
-    		    text: 'Edit this Polygon',
-    		  	icon: markerImage,
-    		  	callback: editMarker
-      };  
-      var removeMarkerItem = {
-         text: 'Remove this Polygon',
-         icon: markerImage,
-         callback: removeMarker
-      };  
-      
-      var changed = false;
-      contextmenu.on('open', function(evt){
-
-        var feature = map.forEachFeatureAtPixel(evt.pixel, function(ft, l){
-          return ft;
-        });
-        if (feature){ //&& feature.get('type') == 'removable') {
-          contextmenu.clear();
-          removeMarkerItem.data = {
-            marker: feature
-          };
-          editMarkerItem.data = {
-        	        marker: feature
-        	      };
-          contextmenu.push(editMarkerItem);
-          contextmenu.push(removeMarkerItem);
-          changed = true;
-        } else if (changed) {
-          contextmenu.clear();
-          contextmenu.extend(contextmenu_items);
-          //contextmenu.extend(contextmenu.getDefaultItems());
-          changed = false;
-        }
-      });
-      map.on('pointermove', function(e) {
-        if (e.dragging) return;
-             
-        var pixel = map.getEventPixel(e.originalEvent);
-        var hit = map.hasFeatureAtPixel(pixel);
-        
-        map.getTarget().style.cursor = hit ? 'pointer' : '';
-      });
-      
-      var modify = new ol.interaction.Modify({
-        features: features,
-        // the SHIFT key must be pressed to delete vertices, so
-        // that new vertices can be drawn at the same position
-        // of existing vertices
-        deleteCondition: function(event) {
-          return ol.events.condition.shiftKeyOnly(event) &&
-              ol.events.condition.doubleClick(event);
-        }
-      });
-      map.addInteraction(modify);
-
-      features.on('add', function(e) {
-    	  var name = prompt("Please enter the name", "My Point");
-
-    	  //Save Name to Label and to JSON, refresh Layer
-    	  //e.element.getStyle().getText().setText(name);
-    	  e.element.set('name', name);
-    	  e.element.set('points_answer', 1);
-    	  e.element.set('points_position', 1);
-    	  
-    	  e.element.setStyle(new ol.style.Style({
-              fill: new ol.style.Fill({
-                  color: 'rgba(255, 255, 255, 0.2)'
-                }),
-                stroke: new ol.style.Stroke({
-                  color: '#ffcc33',
-                  width: 2
-                }),
-                image: new ol.style.Circle({
-                  radius: 7,
-                  fill: new ol.style.Fill({
-                    color: '#ffcc33'
-                  })
-                }),
-                text: new ol.style.Text({
-            	    textAlign: 'center',
-          	    textBaseline: 'middle',
-          	    font: '14px helvetica,sans-serif',
-          	    text: "hallo welt",
-          	    fill: new ol.style.Fill({color: '#000'}),
-          	    stroke: new ol.style.Stroke({color: '#fff', width: 2}),
-          	    offsetX: 0,
-          	    offsetY: 0,
-          	    rotation: 0
                 })
-              }));
-    	  e.element.getStyle().getText().setText(name);
-    	  
-    	  
-    		var  format = new ol.format.GeoJSON();
-    		var data;
-    		data = format.writeFeatures(featureOverlay.getSource().getFeatures());
-    		document.getElementById('geojson').value = data;
-    		map.removeInteraction(draw);
-            showInputForUser();
+            });
 
-      }); 
-     
-      modify.on('modifyend',function(e){
-    	  
-    	  //alert(e.features.getArray()[0].getGeometry().getCoordinates());
-    	  
-    	  
-    		var  format = new ol.format.GeoJSON();
-    		var data;
-    		data = format.writeFeatures(featureOverlay.getSource().getFeatures());
-    		document.getElementById('geojson').value = data;
-    	}); 
-      
-    })(window, document);
-    	
-    </script>
+            var
+                view = new ol.View({
+                    center: [0, 0],
+                    zoom: 0,
+                    projection: 'EPSG:4326',
+                    minZoom: 0,
+                    maxZoom: 4
+                }),
+                imageLayer = new ol.layer.Image({
+                    title: "image",
+                    opacity: 1,
+                    source: new ol.source.ImageStatic({
+                        url: '{IMAGE_PATH}',
+                        projection: 'EPSG:4326',
+                        //url: 'uhd.jpg',
+                        //ToDo Adjust dimensions according to uploaded image: +/-x:2 and +/-y:2 minx,miny,maxx,maxy
+                        imageExtent: [-390, -303, 390, 303],
+                        //Size in Pixels:
+                        imageSize: [780, 606]
+                    })
+                }),
+                map = new ol.Map({
+                    target: doc.getElementById('map'),
+                    logo: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+                    view: view,
+                    layers: [imageLayer, featureOverlay]
+                }),
+                // from https://github.com/DmitryBaranovskiy/raphael
+                elastic = function (t) {
+                    return Math.pow(2, -10 * t) * Math.sin((t - 0.075) * (2 * Math.PI) / 0.3) + 1;
+                },
+                center = function (obj) {
+                    var pan = ol.animation.pan({
+                        duration: 1000,
+                        easing: elastic,
+                        source: view.getCenter()
+                    });
+                    map.beforeRender(pan);
+                    view.setCenter(obj.coordinate);
+                },
+                marker = function (obj) {
+                    draw = new ol.interaction.Draw({
+                        features: features,
+                        type: /** @type {ol.geom.GeometryType} */ ('Polygon')
+                    });
+                    map.addInteraction(draw);
+                };
+
+            var existingFeatures = new ol.format.GeoJSON().readFeatures(existingGeoJSON);
+            featureOverlay.getSource().addFeatures(existingFeatures);
+            var listOfExistingFeatures = featureOverlay.getSource().getFeatures();
+            for (var partFeature of listOfExistingFeatures) {
+                partFeature.setStyle(new ol.style.Style({
+                    fill: new ol.style.Fill({
+                        color: 'rgba(255, 255, 255, 0.2)'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#ffcc33',
+                        width: 2
+                    }),
+                    image: new ol.style.Circle({
+                        radius: 7,
+                        fill: new ol.style.Fill({
+                            color: '#ffcc33'
+                        })
+                    }),
+                    text: new ol.style.Text({
+                        textAlign: 'center',
+                        textBaseline: 'middle',
+                        font: '14px helvetica,sans-serif',
+                        text: "hallo welt",
+                        fill: new ol.style.Fill({color: '#000'}),
+                        stroke: new ol.style.Stroke({color: '#fff', width: 2}),
+                        offsetX: 0,
+                        offsetY: 0,
+                        rotation: 0
+                    })
+                }));
+                partFeature.getStyle().getText().setText(partFeature.get('name'));
+            }
+
+            function updateMarkerDataTable(name, oldname, coordinates, oldcoordinates) {
+                var last_row_index = 0;
+                $("#markerdata").find(".markerdatawizard tbody tr").each(function (e) {
+                    if (name != oldname && coordinates == oldcoordinates &&
+                        $(this).find("input[name='markerdata[key][" + e + "]']").val() == oldname &&
+                        $(this).find("input[name='markerdata[coordinates][" + e + "]']").val() == coordinates) {
+                        $(this).find("input[name='markerdata[key][" + e + "]']").val(name);
+                    }
+
+                    if (name == oldname && coordinates != oldcoordinates &&
+                        $(this).find("input[name='markerdata[key][" + e + "]']").val() == name &&
+                        $(this).find("input[name='markerdata[coordinates][" + e + "]']").val() == oldcoordinates) {
+                        $(this).find("input[name='markerdata[coordinates][" + e + "]']").val(coordinates);
+                    }
+                    last_row_index++;
+                });
+
+                if (!oldname && !oldcoordinates) {
+                    $("#markerdata").find(".markerdatawizard tbody")
+                        .append($("<tr>")
+                            .append($("<td>")
+                                .append($("<input>")
+                                    .attr("id", "markerdata[key][" + last_row_index + "]")
+                                    .attr("name", "markerdata[key][" + last_row_index + "]")
+                                    .attr("class", "form-control")
+                                    .attr("type", "text")
+                                    .attr("size", "20")
+                                    .attr("maxlength", "255")
+                                    .attr("value", name)
+                                    .attr("data-id", "name")
+                                    .attr("data-offset", last_row_index)
+                                    .change(function (e) {
+                                        markerDataTableValueChanged(this);
+                                    })
+                                )
+                            )
+                            .append($("<td>")
+                                .append($("<input>")
+                                    .attr("id", "markerdata[value][" + last_row_index + "]")
+                                    .attr("name", "markerdata[value][" + last_row_index + "]")
+                                    .attr("class", "form-control number")
+                                    .attr("type", "text")
+                                    .attr("size", "20")
+                                    .attr("maxlength", "255")
+                                    .attr("value", 1)
+                                    .attr("data-id", "points_answer")
+                                    .attr("data-offset", last_row_index)
+                                    .change(function (e) {
+                                        markerDataTableValueChanged(this);
+                                    })
+                                )
+                            )
+                            .append($("<td>")
+                                .append($("<input>")
+                                    .attr("id", "markerdata[points_position][" + last_row_index + "]")
+                                    .attr("name", "markerdata[points_position][" + last_row_index + "]")
+                                    .attr("class", "form-control number")
+                                    .attr("type", "text")
+                                    .attr("size", "20")
+                                    .attr("maxlength", "255")
+                                    .attr("value", 1)
+                                    .attr("data-id", "points_position")
+                                    .attr("data-offset", last_row_index)
+                                    .change(function (e) {
+                                        markerDataTableValueChanged(this);
+                                    })
+                                )
+                                .append($("<input>")
+                                    .attr("id", "markerdata[coordinates][" + last_row_index + "]")
+                                    .attr("name", "markerdata[coordinates][" + last_row_index + "]")
+                                    .attr("class", "form-control")
+                                    .attr("type", "hidden")
+                                    .attr("value", coordinates)
+                                )
+                                .append($("<input>")
+                                    .attr("id", "markerdata[oldcoordinates][" + last_row_index + "]")
+                                    .attr("name", "markerdata[oldcoordinates][" + last_row_index + "]")
+                                    .attr("class", "form-control")
+                                    .attr("type", "hidden")
+                                )
+                            )
+                        );
+                }
+            }
+
+            $("#markerdata").find(".markerdatawizard input").change(function (e) {
+                markerDataTableValueChanged(this);
+            });
+
+            var markerDataTableValueChanged = function (e) {
+                var coordinates = $("#markerdata").find(".markerdatawizard input[name='markerdata[coordinates][" + e.dataset.offset + "]']").val();
+
+                var arr = JSON.parse($("#geojson").val());
+                var i;
+
+                for (i = 0; i < arr.features.length; i++) {
+                    if (coordinates == JSON.stringify(arr.features[i].geometry.coordinates)) {
+                        if (e.dataset.id == "name") {
+                            arr.features[i].properties.name = e.value;
+                            for (var partFeature of listOfExistingFeatures) {
+                                if (JSON.stringify(partFeature.getGeometry().getCoordinates()) == coordinates) {
+                                    partFeature.set("name", e.value);
+                                    partFeature.getStyle().getText().setText(partFeature.get("name"));
+                                }
+
+                            }
+                        } else if (e.dataset.id == "points_answer") {
+                            arr.features[i].properties.points_answer = new Number(e.value.replace(",", "."));
+                        } else if (e.dataset.id == "points_position") {
+                            arr.features[i].properties.points_position = new Number(e.value.replace(",", "."));
+                        }
+                    }
+                }
+
+                $("#geojson").val(JSON.stringify(arr));
+            };
+
+            var contextmenu_items = [
+                {
+                    text: 'Add a Polygon',
+                    icon: markerImage,
+                    callback: marker
+                }
+            ];
+            var contextmenu = new ContextMenu({
+                width: 180,
+                default_items: false,
+                items: contextmenu_items
+            });
+            map.addControl(contextmenu);
+
+            var removeMarker = function (obj) {
+                var coordinates = JSON.stringify(obj.data.marker.getGeometry().getCoordinates());
+                var name = obj.data.marker.getStyle().getText().getText();
+                var is_removed = false;
+
+                $("#markerdata").find(".markerdatawizard tbody tr").each(function (e) {
+                    if (is_removed) {
+                        $(this).find("input[name='markerdata[key][" + e + "]']")
+                            .attr("id", "markerdata[key][" + (e - 1) + "]")
+                            .attr("name", "markerdata[key][" + (e - 1) + "]");
+                        $(this).find("input[name='markerdata[value][" + e + "]']")
+                            .attr("id", "markerdata[value][" + (e - 1) + "]")
+                            .attr("name", "markerdata[value][" + (e - 1) + "]");
+                        $(this).find("input[name='markerdata[points_position][" + e + "]']")
+                            .attr("id", "markerdata[points_position][" + (e - 1) + "]")
+                            .attr("name", "markerdata[points_position][" + (e - 1) + "]");
+                        $(this).find("input[name='markerdata[coordinates][" + e + "]']")
+                            .attr("id", "markerdata[coordinates][" + (e - 1) + "]")
+                            .attr("name", "markerdata[coordinates][" + (e - 1) + "]");
+                        $(this).find("input[name='markerdata[oldcoordinates][" + e + "]']")
+                            .attr("id", "markerdata[oldcoordinates][" + (e - 1) + "]")
+                            .attr("name", "markerdata[oldcoordinates][" + (e - 1) + "]");
+                    }
+                    if ($(this).find("input[name='markerdata[key][" + e + "]']").val() == name &&
+                        $(this).find("input[name='markerdata[coordinates][" + e + "]']").val() == coordinates) {
+                        $(this).remove();
+                        is_removed = true;
+                    }
+                });
+                featureOverlay.getSource().removeFeature(obj.data.marker);
+
+                var format = new ol.format.GeoJSON();
+                var data;
+                data = format.writeFeatures(featureOverlay.getSource().getFeatures(), {decimals: 6});
+
+                $('#geojson').val(data);
+            };
+
+            var editMarker = function (obj) {
+
+                var oldname = obj.data.marker.getStyle().getText().getText();
+                var name = prompt("Please enter the name", oldname);
+
+                //this won't work in safari browser
+                //in safari, canceling a prompt will return "" instead of null, as all other browsers do
+                if (name == null) {
+                    name = oldname;
+                }
+
+                if (name != oldname) {
+                    //Save Name to Label and to JSON, refresh Layer
+                    obj.data.marker.getStyle().getText().setText(name);
+                    obj.data.marker.set('name', name);
+
+                    var format = new ol.format.GeoJSON();
+                    var data;
+                    data = format.writeFeatures(featureOverlay.getSource().getFeatures(), {decimals: 6});
+                    $('#geojson').val(data);
+                    var coordinates = JSON.stringify(obj.data.marker.getGeometry().getCoordinates());
+                    updateMarkerDataTable(name, oldname, coordinates, coordinates);
+
+                    featureOverlay.getSource().changed();
+                }
+            };
+
+            //TODO Add additional option: MOVE polygon
+
+            var editMarkerItem = {
+                text: 'Edit this Polygon',
+                icon: markerImage,
+                callback: editMarker
+            };
+            var removeMarkerItem = {
+                text: 'Remove this Polygon',
+                icon: markerImage,
+                callback: removeMarker
+            };
+
+            var changed = false;
+            contextmenu.on('open', function (evt) {
+
+                var feature = map.forEachFeatureAtPixel(evt.pixel, function (ft, l) {
+                    return ft;
+                });
+                if (feature) { //&& feature.get('type') == 'removable') {
+                    contextmenu.clear();
+                    removeMarkerItem.data = {
+                        marker: feature
+                    };
+                    editMarkerItem.data = {
+                        marker: feature
+                    };
+                    contextmenu.push(editMarkerItem);
+                    contextmenu.push(removeMarkerItem);
+                    changed = true;
+                } else if (changed) {
+                    contextmenu.clear();
+                    contextmenu.extend(contextmenu_items);
+                    //contextmenu.extend(contextmenu.getDefaultItems());
+                    changed = false;
+                }
+            });
+            map.on('pointermove', function (e) {
+                if (e.dragging) return;
+
+                var pixel = map.getEventPixel(e.originalEvent);
+                var hit = map.hasFeatureAtPixel(pixel);
+
+                map.getTarget().style.cursor = hit ? 'pointer' : '';
+            });
+
+            var select = new ol.interaction.Select();
+
+            var modify = new ol.interaction.Modify({
+                features: features,
+                // the SHIFT key must be pressed to delete vertices, so
+                // that new vertices can be drawn at the same position
+                // of existing vertices
+                deleteCondition: function (event) {
+                    return ol.events.condition.shiftKeyOnly(event) &&
+                        ol.events.condition.doubleClick(event);
+                }
+            });
+            map.addInteraction(modify);
+
+            features.on('add', function (e) {
+                var name = prompt("Please enter the name", "My Point");
+
+                //Save Name to Label and to JSON, refresh Layer
+                //e.element.getStyle().getText().setText(name);
+                e.element.set('name', name);
+                e.element.set('points_answer', 1);
+                e.element.set('points_position', 1);
+
+                e.element.setStyle(new ol.style.Style({
+                    fill: new ol.style.Fill({
+                        color: 'rgba(255, 255, 255, 0.2)'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: '#ffcc33',
+                        width: 2
+                    }),
+                    image: new ol.style.Circle({
+                        radius: 7,
+                        fill: new ol.style.Fill({
+                            color: '#ffcc33'
+                        })
+                    }),
+                    text: new ol.style.Text({
+                        textAlign: 'center',
+                        textBaseline: 'middle',
+                        font: '14px helvetica,sans-serif',
+                        text: "hallo welt",
+                        fill: new ol.style.Fill({color: '#000'}),
+                        stroke: new ol.style.Stroke({color: '#fff', width: 2}),
+                        offsetX: 0,
+                        offsetY: 0,
+                        rotation: 0
+                    })
+                }));
+                e.element.getStyle().getText().setText(name);
+
+                var format = new ol.format.GeoJSON();
+                var data;
+                data = format.writeFeatures(featureOverlay.getSource().getFeatures(), {decimals: 6});
+
+                updateMarkerDataTable(name, '', JSON.stringify(e.element.getGeometry().getCoordinates()), '');
+
+                $('#geojson').val(data);
+                map.removeInteraction(draw);
+            });
+
+            modify.on('modifyend', function (e) {
+                var features = e.features.getArray();
+                for (var i = 0; i < features.length; i++) {
+                    var name = features[i].getStyle().getText().getText();
+                    updateMarkerDataTable(name, name, JSON.stringify(features[i].getGeometry().getCoordinates()), $("input[name='markerdata[oldcoordinates][" + i + "]']").val());
+                    $("input[name='markerdata[oldcoordinates][" + i + "]']").val("");
+                }
+
+                var format = new ol.format.GeoJSON();
+                var data;
+                data = format.writeFeatures(featureOverlay.getSource().getFeatures(), {decimals: 6});
+
+                $('#geojson').val(data);
+            });
+
+            modify.on('modifystart', function (e) {
+                var features = e.features.getArray();
+                for (var i = 0; i < features.length; i++) {
+                    var coordinates = JSON.stringify(features[i].getGeometry().getCoordinates());
+                    $("input[name='markerdata[oldcoordinates][" + i + "]']").val(coordinates);
+                }
+            });
+
+        })
+        (window, document);
+    });
+</script>

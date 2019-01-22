@@ -1,6 +1,7 @@
 questionType#:#Marker-Frage (Betaversion)
-points#:#Punkte
-save#:#Speichern
+marker_name#:#Name
+points_answer#:#Punkte für Label
+points_position#:#Punkte für position
 errorInput#:#Eingaben unvollständig
 image#:#Hintergrundbild
 levenshtein#:#Levenshteinabstand
@@ -10,3 +11,5 @@ openlayers_area#:#OpenLayers-Bereich
 info_predefmarker#:#Prüflinge dürfen nur die unten vorgegebenen Marker verwenden.
 info_showpolygons#:#Hiermit können dem Prüfling die verfügbaren Zielpositionen gezeigt werden. Label werden nicht angezeigt.
 info_editor#:#Bereiche können per Rechstklick erstellt und editiert werden.<br/>Während der Polygonerstellung kann durch halten der Shift-Taste in den Freihandzeichenmodus gewechselt werden.<br/>Einzelne Ecken eines fertigen Polygons können bei gehaltener Shift-Taste per Doppelklick entfernt werden.
+info_image#:#Bitte füllen Sie alle erforderlichen Felder aus, bevor Sie den Klick speichern
+upload_image#:#Bild hochladen
